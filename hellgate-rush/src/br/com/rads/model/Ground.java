@@ -15,7 +15,11 @@ import com.badlogic.gdx.math.Vector2;
 public class Ground {
 
 	private static final float SIZE = 1f;
+	public static final float SPEED = 4f;
+	
 	private Vector2 position;
+	private Vector2 acceleration = new Vector2();
+	private Vector2 velocity = new Vector2();
 
 	private Rectangle bounds;
 
@@ -43,6 +47,24 @@ public class Ground {
 	 */
 	public Rectangle getBounds() {
 		return bounds;
+	}
+	
+	/**
+	 * @return the velocity
+	 */
+	public Vector2 getVelocity() {
+		return velocity;
+	}
+	
+	/**
+	 * @return the acceleration
+	 */
+	public Vector2 getAcceleration() {
+		return acceleration;
+	}
+	
+	public void update(float delta){
+		position.add(velocity.cpy().scl(delta));
 	}
 	
 }

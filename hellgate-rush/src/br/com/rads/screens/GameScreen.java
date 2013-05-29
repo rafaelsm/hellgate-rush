@@ -3,6 +3,7 @@
  */
 package br.com.rads.screens;
 
+import br.com.rads.controller.HellController;
 import br.com.rads.model.HellArea;
 import br.com.rads.view.HellRenderer;
 
@@ -18,6 +19,7 @@ public class GameScreen implements Screen {
 
 	private HellArea hellArea;
 	private HellRenderer renderer;
+	private HellController controller;
 	
 	/**
 	 * Inicia o mundo e o render
@@ -26,6 +28,7 @@ public class GameScreen implements Screen {
 	public void show() {
 		hellArea = new HellArea();
 		renderer = new HellRenderer(hellArea);
+		controller = new HellController(hellArea);
 	}
 	
 	/**
@@ -35,6 +38,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		controller.update(delta);
 		renderer.render();
 	}
 

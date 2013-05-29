@@ -37,7 +37,7 @@ public class HellArea {
 	private void createDemoArea() {
 		minion = new Minion(new Vector2(1,1), true);
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 30; i++) {
 			Ground g = new Ground( new Vector2(i, 0));
 			ground.add(g);
 		}
