@@ -23,9 +23,6 @@ public class Ground {
 
 	private Rectangle bounds;
 
-	/**
-	 * Construtor
-	 */
 	public Ground(Vector2 position) {
 		this.position = new Vector2(position.x, position.y);
 		
@@ -35,30 +32,23 @@ public class Ground {
 		
 	}
 
-	/**
-	 * @return the position
-	 */
 	public Vector2 getPosition() {
 		return position;
 	}
 	
-	/**
-	 * @return the bounds
-	 */
+	public void setPosition(Vector2 newPosition) {
+		this.position = newPosition;
+	}
+	
+
 	public Rectangle getBounds() {
 		return bounds;
 	}
-	
-	/**
-	 * @return the velocity
-	 */
+
 	public Vector2 getVelocity() {
 		return velocity;
 	}
 	
-	/**
-	 * @return the acceleration
-	 */
 	public Vector2 getAcceleration() {
 		return acceleration;
 	}

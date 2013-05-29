@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
 	public void show() {
 		hellArea = new HellArea();
 		renderer = new HellRenderer(hellArea);
-		controller = new HellController(hellArea);
+		controller = new HellController(hellArea,false); //hange here for infinity run
 	}
 	
 	/**
