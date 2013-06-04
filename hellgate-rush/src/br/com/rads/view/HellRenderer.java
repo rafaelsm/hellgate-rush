@@ -21,10 +21,19 @@ import br.com.rads.model.Minion;
  */
 public class HellRenderer {
 
+	private static final float CAMERA_WIDTH = 10f;
+	private static final float CAMERA_HEIGHT = 7f;
+	
 	private HellArea hellArea;
 	private OrthographicCamera camera;
 	
 	private ShapeRenderer debugRenderer = new ShapeRenderer(); //debug apenas
+	
+	//tamanhos de tela
+	private int height;
+	private int width;
+	private float ppuX;
+	private float ppuY;
 	
 	public HellRenderer(HellArea hellArea){
 		this.hellArea = hellArea;
@@ -58,6 +67,13 @@ public class HellRenderer {
 		debugRenderer.rect(x1, y1, rect.width, rect.height);
 		
 		debugRenderer.end();
+	}
+	
+	public void setSize(int width, int height){
+		this.width = width;
+		this.height = height;
+		this.ppuX = (float) width / CAMERA_WIDTH;
+		this.ppuY = (float) height / CAMERA_HEIGHT;
 	}
 	
 }
