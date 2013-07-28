@@ -4,6 +4,7 @@
 package br.com.rads.screens;
 
 import br.com.rads.controller.HellController;
+import br.com.rads.model.FirstArea;
 import br.com.rads.model.HellArea;
 import br.com.rads.view.HellRenderer;
 
@@ -31,9 +32,9 @@ public class GameScreen implements Screen, InputProcessor{
 	 */
 	@Override
 	public void show() {
-		hellArea = new HellArea();
+		hellArea = new HellArea(new FirstArea(100, 7));
 		renderer = new HellRenderer(hellArea);
-		controller = new HellController(hellArea,false); //hange here for infinity run
+		controller = new HellController(hellArea,false); //change here for infinity run
 	}
 	
 	/**

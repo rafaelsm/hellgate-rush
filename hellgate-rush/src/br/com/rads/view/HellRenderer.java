@@ -47,7 +47,7 @@ public class HellRenderer {
 		debugRenderer.begin(ShapeType.Line);
 		
 		//renderiza chao
-		for ( Ground g : hellArea.getGround()) {
+		for ( Ground g : hellArea.getDrawableGround((int)CAMERA_WIDTH, (int)CAMERA_HEIGHT)) {
 			
 			Rectangle rect = g.getBounds();
 			float x1 = g.getPosition().x + rect.x;

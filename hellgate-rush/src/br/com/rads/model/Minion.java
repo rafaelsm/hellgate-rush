@@ -22,13 +22,15 @@ public class Minion {
 	};
 	
 	private static final float JUMP_VELOCITY = 1f;
-	private static final float SIZE = 1f;
+	private static final float SIZE = 0.5f;
 	
 	private Vector2 position = new Vector2();
 	private Vector2 acceleration = new Vector2();
 	private Vector2 velocity = new Vector2();
-	
 	private Rectangle bounds = new Rectangle();
+	
+	private float stateTime = 0;
+	private boolean	longJump = false;
 	private State state = State.RUNNING;
 	private boolean isFirstMinion = false; //pode haver mais de um minion na tela, todos sao controlados ao mesmo tempo
 
@@ -40,11 +42,16 @@ public class Minion {
 		this.isFirstMinion = firstMinion;
 		this.bounds.height = SIZE;
 		this.bounds.width = SIZE;
+		this.bounds.x = position.x;
+		this.bounds.y = position.y;
 	}
 	
 	public void update(float delta)
 	{
-		position.add(velocity.cpy().scl(delta));
+//		position.add(velocity.cpy().scl(delta));
+//		this.bounds.x = position.x;
+//		this.bounds.y = position.y;
+		stateTime += delta;
 	}
 	
 	/**
@@ -59,6 +66,8 @@ public class Minion {
 	 */
 	public void setPosition(Vector2 position) {
 		this.position = position;
+		this.bounds.setX(position.x);
+		this.bounds.setY(position.y);
 	}
 	
 	/**
@@ -108,6 +117,41 @@ public class Minion {
 	 */
 	public void setVelocity(Vector2 velocity) {
 		this.velocity = velocity;
+	}
+
+	/**
+	 * @return the stateTime
+	 */
+	public float getStateTime() {
+		return stateTime;
+	}
+
+	/**
+	 * @param stateTime the stateTime to set
+	 */
+	public void setStateTime(float stateTime) {
+		this.stateTime = stateTime;
+	}
+
+	/**
+	 * @return the longJump
+	 */
+	public boolean isLongJump() {
+		return longJump;
+	}
+
+	/**
+	 * @param longJump the longJump to set
+	 */
+	public void setLongJump(boolean longJump) {
+		this.longJump = longJump;
+	}
+
+	/**
+	 * @param bounds the bounds to set
+	 */
+	public void setBounds(Rectangle bounds) {
+		this.bounds = bounds;
 	}
 	
 	

@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Ground {
 
 	private static final float SIZE = 1f;
+	public static final float SCALE = 1f;//change here for width, adjustments...
 	public static final float SPEED = 4f;
 	
 	private Vector2 position;
