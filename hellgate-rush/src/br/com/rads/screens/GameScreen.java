@@ -33,7 +33,7 @@ public class GameScreen implements Screen, InputProcessor{
 	@Override
 	public void show() {
 		hellArea = new HellArea(new FirstArea(100, 7));
-		renderer = new HellRenderer(hellArea);
+		renderer = new HellRenderer(hellArea, true);
 		controller = new HellController(hellArea,false); //change here for infinity run
 	}
 	

@@ -99,6 +99,7 @@ public class HellController {
 
 		}
 		
+		minion.getVelocity().x = 1f;
 		minion.update(delta);
 
 

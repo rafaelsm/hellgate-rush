@@ -3,8 +3,10 @@
  */
 package br.com.rads.view;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,24 +27,39 @@ public class HellRenderer {
 	private static final float CAMERA_HEIGHT = 7f;
 	
 	private HellArea hellArea;
+	private Minion minion;
 	private OrthographicCamera camera;
 	
 	private ShapeRenderer debugRenderer = new ShapeRenderer(); //debug apenas
 	
-	//tamanhos de tela
-	private int height;
+	private SpriteBatch batch;
+	private boolean debug = false;
 	private int width;
+	private int height;
 	private float ppuX;
 	private float ppuY;
 	
-	public HellRenderer(HellArea hellArea){
+	public HellRenderer(HellArea hellArea, boolean debug){
 		this.hellArea = hellArea;
-		this.camera = new OrthographicCamera(10, 7); //inicia camera para pegar a tela toda em 10/7
-		this.camera.position.set(5f, 3.5f, 0); //oposiciona a camera no meio da tela
+		this.minion = hellArea.getMinion();
+		this.camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT); //inicia camera para pegar a tela toda em 10/7
+		this.camera.position.set(CAMERA_WIDTH/2f, CAMERA_HEIGHT/2f, 0); //posiciona a camera no meio da tela
 		this.camera.update();
+		this.debug = debug;
+		batch = new SpriteBatch();
+		
 	}
 	
 	public void render(){
+		//quando tiver texturas
+//		batch.begin();
+//			drawGround();
+//			drawMinion();
+//		batch.end();
+		
+		Minion m = hellArea.getMinion();
+		moveCamera(m.getPosition().x, CAMERA_HEIGHT / 2);
+		
 		debugRenderer.setProjectionMatrix(camera.combined);
 		debugRenderer.begin(ShapeType.Line);
 		
@@ -59,7 +76,6 @@ public class HellRenderer {
 		}
 		
 		//renderiza minion
-		Minion m = hellArea.getMinion();
 		Rectangle rect = m.getBounds();
 		float x1 = m.getPosition().x + rect.x;
 		float y1 = m.getPosition().y + rect.y;
@@ -67,8 +83,17 @@ public class HellRenderer {
 		debugRenderer.rect(x1, y1, rect.width, rect.height);
 		
 		debugRenderer.end();
+		
+		//renderiza colisao
+		//drawCollision();
+		
 	}
 	
+	public void moveCamera(float x,float y){
+		camera.position.x = hellArea.getMinion().getPosition().x + hellArea.getMinion().getBounds().x + 4f;
+	    camera.update();
+	}
+
 	public void setSize(int width, int height){
 		this.width = width;
 		this.height = height;
@@ -76,4 +101,10 @@ public class HellRenderer {
 		this.ppuY = (float) height / CAMERA_HEIGHT;
 	}
 	
+	public boolean isDebug() {
+		return debug;
+	}
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
 }
