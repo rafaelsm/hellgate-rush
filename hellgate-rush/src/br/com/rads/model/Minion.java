@@ -21,7 +21,6 @@ public class Minion {
 		DYING
 	};
 	
-	private static final float JUMP_VELOCITY = 1f;
 	private static final float SIZE = 0.5f;
 	
 	private Vector2 position = new Vector2();
@@ -32,18 +31,16 @@ public class Minion {
 	private float stateTime = 0;
 	private boolean	longJump = false;
 	private State state = State.RUNNING;
-	private boolean isFirstMinion = false; //pode haver mais de um minion na tela, todos sao controlados ao mesmo tempo
 
 	/**
 	 * Construtor
 	 */
 	public Minion(Vector2 position, boolean firstMinion) {
 		this.position = position;
-		this.isFirstMinion = firstMinion;
-		this.bounds.height = SIZE;
-		this.bounds.width = SIZE;
 		this.bounds.x = position.x;
 		this.bounds.y = position.y;
+		this.bounds.height = SIZE;
+		this.bounds.width = SIZE;
 	}
 	
 	public void update(float delta)

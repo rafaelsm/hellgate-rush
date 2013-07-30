@@ -5,14 +5,14 @@ package br.com.rads.screens;
 
 import br.com.rads.controller.HellController;
 import br.com.rads.model.FirstArea;
-import br.com.rads.model.HellArea;
+import br.com.rads.model.Hell;
 import br.com.rads.view.HellRenderer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL10;
 
 /**
  * @author rafael da silva melo
@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.GL20;
  */
 public class GameScreen implements Screen, InputProcessor{
 
-	private HellArea hellArea;
+	private Hell hell;
 	private HellRenderer renderer;
 	private HellController controller;
 	
@@ -32,9 +32,10 @@ public class GameScreen implements Screen, InputProcessor{
 	 */
 	@Override
 	public void show() {
-		hellArea = new HellArea(new FirstArea(100, 7));
-		renderer = new HellRenderer(hellArea, true);
-		controller = new HellController(hellArea,false); //change here for infinity run
+		hell = new Hell(new FirstArea(100, 7));
+		renderer = new HellRenderer(hell, true);
+		controller = new HellController(hell);
+		Gdx.input.setInputProcessor(this);
 	}
 	
 	/**
@@ -43,12 +44,11 @@ public class GameScreen implements Screen, InputProcessor{
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		controller.update(delta);
 		renderer.render();
 		
-		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override

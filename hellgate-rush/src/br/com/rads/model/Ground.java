@@ -16,18 +16,15 @@ public class Ground {
 
 	private static final float SIZE = 1f;
 	public static final float SCALE = 1f;//change here for width, adjustments...
-	public static final float SPEED = 4f;
 	
-	private Vector2 position;
-	private Vector2 acceleration = new Vector2();
-	private Vector2 velocity = new Vector2();
-
-	private Rectangle bounds;
+	private Vector2 position = new Vector2();
+	private Rectangle bounds = new Rectangle();
 
 	public Ground(Vector2 position) {
-		this.position = new Vector2(position.x, position.y);
+		this.position = position;
 		
-		this.bounds = new Rectangle();
+		this.bounds.setX(position.x);
+		this.bounds.setY(position.y);
 		this.bounds.width = SIZE;
 		this.bounds.height = SIZE;
 		
@@ -37,25 +34,8 @@ public class Ground {
 		return position;
 	}
 	
-	public void setPosition(Vector2 newPosition) {
-		this.position = newPosition;
-	}
-	
-
 	public Rectangle getBounds() {
 		return bounds;
-	}
-
-	public Vector2 getVelocity() {
-		return velocity;
-	}
-	
-	public Vector2 getAcceleration() {
-		return acceleration;
-	}
-	
-	public void update(float delta){
-		position.add(velocity.cpy().scl(delta));
 	}
 	
 }

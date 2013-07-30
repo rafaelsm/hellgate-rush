@@ -15,18 +15,19 @@ import com.badlogic.gdx.math.Vector2;
  *         Classe generica que define uma area/fase/mundo do jogo
  * 
  */
-public class HellArea {
+public class Hell {
 
 	private Minion minion;
 	private Area area;
-	private ArrayList<Rectangle> collisionRec = new ArrayList<Rectangle>();
+	
+	private ArrayList<Rectangle> collisionRects = new ArrayList<Rectangle>();
 
-	public HellArea(Area area) {
+	public Hell(Area area) {
 		createDemoArea(area);
 	}
 
 	private void createDemoArea(Area area) {
-		minion = new Minion(new Vector2(1, (float) 0.5), true);
+		minion = new Minion(new Vector2(1, (float)4), true);
 		this.area = area;
 	}
 
@@ -55,8 +56,8 @@ public class HellArea {
 		List<Ground> grounds = new ArrayList<Ground>();
 		Ground ground;
 
-		for (int col = x; col < x2; col++) {
-			for (int row = y; row < y2; row++) {
+		for (int col = x; col <= x2; col++) {
+			for (int row = y; row <= y2; row++) {
 				ground = area.getGround()[col][row];
 				if (ground != null) {
 					grounds.add(ground);
@@ -76,8 +77,8 @@ public class HellArea {
 		return area;
 	}
 
-	public ArrayList<Rectangle> getCollisionRec() {
-		return collisionRec;
+	public ArrayList<Rectangle> getCollisionRect() {
+		return collisionRects;
 	}
 
 }

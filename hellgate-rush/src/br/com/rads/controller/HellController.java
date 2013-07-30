@@ -3,21 +3,17 @@
  */
 package br.com.rads.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import br.com.rads.model.Ground;
-import br.com.rads.model.HellArea;
+import br.com.rads.model.Hell;
 import br.com.rads.model.Minion;
 import br.com.rads.model.Minion.State;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Pool;
 
 /**
@@ -32,43 +28,39 @@ public class HellController {
 	};
 
 	private static Map<Keys, Boolean> keys = new HashMap<HellController.Keys, Boolean>();
+	static{
+		
+	}
 
 	// Variaveis para controlar o pulo
 	private static final long LONG_JUMP_PRESS = 150L;// tempo segurando pulo
 	private static final float ACCELERATION = 20F;
 	private static final float GRAVITY = -20F;
 	private static final float MAX_JUMP_SPEED = 7F;
+	private static final float DAMP = 0.90f;
+	private static final float MAX_VEL = 4f;
 
+	private Hell hellArea;
+	private Minion minion;
 	private long jumpPressedTime;
 	private boolean jumpingPressed;
-	private boolean grounded;
-
-	private HellArea hellArea;
-	private Minion minion;
-	private Array<Ground> grounds;
-
-	private boolean infinityRun;
+	private boolean grounded = false;
 
 	private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
-
 		@Override
 		protected Rectangle newObject() {
 			return new Rectangle();
 		}
-
 	};
 
 	private Array<Ground> collidable = new Array<Ground>();
 
-	public HellController(HellArea area, boolean infinityRun) {
+	public HellController(Hell area) {
 		this.hellArea = area;
 		this.minion = area.getMinion();
 		configKeys();
 	}
 
-	/**
-	 * 
-	 */
 	private void configKeys() {
 		keys.put(Keys.JUMP, false);
 		keys.put(Keys.THROW, false);
@@ -79,6 +71,10 @@ public class HellController {
 		// pega entradas
 		processInput();
 
+		if (grounded && minion.getState().equals(State.JUMPING)) {
+			minion.setState(State.RUNNING);
+		}
+
 		minion.getAcceleration().y = GRAVITY;
 		minion.getAcceleration().scl(delta);
 		minion.getVelocity().add(minion.getAcceleration().x,
@@ -86,25 +82,17 @@ public class HellController {
 
 		checkCollision(delta);
 
-		if (minion.getPosition().y < 0.5) {
+		minion.getVelocity().x *= DAMP;
 
-			minion.getPosition().y = 0.5f;
-			minion.setPosition(minion.getPosition());
-
-			if (minion.getState().equals(State.JUMPING)) {
-
-				minion.setState(State.RUNNING);
-
-			}
-
+		if (minion.getVelocity().x > MAX_VEL) {
+			minion.getVelocity().x = MAX_VEL;
 		}
-		
+		if (minion.getVelocity().x < -MAX_VEL) {
+			minion.getVelocity().x = -MAX_VEL;
+		}
+
 		minion.getVelocity().x = 1f;
 		minion.update(delta);
-
-
-		// atualiza o chao
-		//updateGround(delta);
 	}
 
 	/**
@@ -122,14 +110,19 @@ public class HellController {
 		int startY = (int) minion.getBounds().y;
 		int endY = (int) (minion.getBounds().y + minion.getBounds().height);
 
-		startX = endX = (int) Math.floor(minion.getBounds().x
-				+ minion.getBounds().width + minion.getVelocity().x);
+		if (minion.getVelocity().x < 0) {
+			startX = endX = (int) Math.floor(minion.getBounds().x
+					+ minion.getVelocity().x);
+		} else {
+			startX = endX = (int) Math.floor(minion.getBounds().x
+					+ minion.getBounds().width + minion.getVelocity().x);
+		}
 
 		populateCollisionGround(startX, startY, endX, endY);
 
 		minionRect.x += minion.getVelocity().x;
 
-		hellArea.getCollisionRec().clear();
+		hellArea.getCollisionRect().clear();
 
 		// Verifica colisao!
 		for (Ground ground : collidable) {
@@ -138,9 +131,9 @@ public class HellController {
 				continue;
 
 			if (minionRect.overlaps(ground.getBounds())) {
-				// fazer esquema de perder minions
-				//Gdx.app.log("COLLISION", "horizontal");
-				hellArea.getCollisionRec().add(ground.getBounds());
+				Gdx.app.log("COLLISION", "horizontal");
+				minion.getVelocity().x = 0;
+				hellArea.getCollisionRect().add(ground.getBounds());
 				break;
 			}
 		}
@@ -174,25 +167,25 @@ public class HellController {
 				if (minion.getVelocity().y < 0) {
 					grounded = true;
 				}
-				// fazer esquema de perder minions
+
 				Gdx.app.log("COLLISION", "vertical");
 
 				minion.getVelocity().y = 0;
-				hellArea.getCollisionRec().add(ground.getBounds());
+				hellArea.getCollisionRect().add(ground.getBounds());
 				break;
 
 			}
 		}
 
 		minionRect.y = minion.getPosition().y;
-		//Gdx.app.log("Y", "" + minionRect.y);
-		
+		// Gdx.app.log("Y", "" + minionRect.y);
+
 		minion.getPosition().add(minion.getVelocity());
 		minion.getBounds().x = minion.getPosition().x;
 		minion.getBounds().y = minion.getPosition().y;
-		
-		minion.getVelocity().scl(1/delta);
-		
+
+		minion.getVelocity().scl(1 / delta);
+
 	}
 
 	/**
@@ -208,31 +201,15 @@ public class HellController {
 
 		for (int x = startX; x <= endX; x++) {
 			for (int y = startY; y <= endY; y++) {
-				if (x > 0 && x < hellArea.getArea().getWidth() && y >= 0
+				if (x >= 0 && x < hellArea.getArea().getWidth() && y >= 0
 						&& y < hellArea.getArea().getHeight()) {
-					collidable.add(hellArea.getArea().get(x, y));
+					collidable.add(hellArea.getArea().get(x, y)); // verificar o
+																	// get da
+																	// area
 				}
 			}
 		}
 
-	}
-
-	/**
-	 * @param delta
-	 */
-	private void updateGround(float delta) {
-		for (Ground g : hellArea.getArea().getGroundList()) {
-
-			g.getVelocity().x = -Ground.SPEED;
-			g.update(delta);
-
-			if ((g.getPosition().x < -g.getBounds().width) && infinityRun) {
-				g.setPosition(new Vector2(10 * g.SCALE, 0));// da merda...os
-															// blocos se
-															// sobrepoem
-			}
-
-		}
 	}
 
 	/**
