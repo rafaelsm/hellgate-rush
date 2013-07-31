@@ -39,6 +39,7 @@ public class HellController {
 	private static final float MAX_JUMP_SPEED = 7F;
 	private static final float DAMP = 0.90f;
 	private static final float MAX_VEL = 4f;
+	private static final float VELOCITY = 2f;
 
 	private Hell hellArea;
 	private Minion minion;
@@ -91,7 +92,7 @@ public class HellController {
 			minion.getVelocity().x = -MAX_VEL;
 		}
 
-		minion.getVelocity().x = 1f;
+		minion.getVelocity().x = VELOCITY;;
 		minion.update(delta);
 	}
 
