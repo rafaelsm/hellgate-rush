@@ -75,7 +75,7 @@ public class HellRenderer {
 		drawDebug();
 //
 		Minion m = hell.getMinion();
-		moveCamera(m.getPosition().x, CAMERA_HEIGHT / 2);
+		moveCamera(m.getPosition().x +4f, CAMERA_HEIGHT / 2);
 
 	}
 
@@ -112,9 +112,17 @@ public class HellRenderer {
 	}
 
 	public void moveCamera(float x, float y) {
-//		camera.position.x = hell.getMinion().getPosition().x
-//				+ hell.getMinion().getBounds().x;
-		this.camera.position.set(hell.getMinion().getPosition().x + 4f,hell.getMinion().getPosition().y + 2f,0);
+//		this.camera.position.set(hell.getMinion().getPosition().x + 4f,hell.getMinion().getPosition().y + 2f,0);
+		
+		Minion minion  = hell.getMinion();
+		if (minion.getPosition().y > camera.position.y) {
+			camera.position.y+=0.05;
+		} else if(minion.getPosition().y < camera.position.y - 2.5f){
+			camera.position.y-=0.05;
+		}
+		
+		this.camera.position.set(x,camera.position.y,0);
+		
 		camera.update();
 	}
 

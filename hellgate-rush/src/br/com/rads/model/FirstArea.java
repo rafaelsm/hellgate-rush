@@ -23,7 +23,7 @@ public class FirstArea extends Area {
 
 	@Override
 	public void loadArea() {
-		
+
 		for (int col = 0; col < width; col++) {
 			for (int row = 0; row < height; row++) {
 				this.ground[col][row] = null;
@@ -31,13 +31,20 @@ public class FirstArea extends Area {
 		}
 
 		for (int col = 0; col < this.width; col++) {
-			if (col % 7 == 1) {
+
+			if (col < 15 || col > 60) {
+				Ground g = new Ground(new Vector2(col, 0));
+				this.ground[col][0] = g;
+			} else if (col > 15 && col < 30) {
 				Ground g = new Ground(new Vector2(col, 1));
 				this.ground[col][1] = g;
+			} else if (col > 30 && col < 45) {
+				Ground g = new Ground(new Vector2(col, 2));
+				this.ground[col][2] = g;
+			} else if (col > 45 && col < 60) {
+				Ground g = new Ground(new Vector2(col, 3));
+				this.ground[col][3] = g;
 			}
-
-			Ground g = new Ground(new Vector2(col, 0));
-			this.ground[col][0] = g;
 
 		}
 	}

@@ -39,7 +39,7 @@ public class HellController {
 	private static final float MAX_JUMP_SPEED = 7F;
 	private static final float DAMP = 0.90f;
 	private static final float MAX_VEL = 4f;
-	private static final float VELOCITY = 2f;
+	private static final float VELOCITY = 5f;
 
 	private Hell hellArea;
 	private Minion minion;
@@ -132,7 +132,7 @@ public class HellController {
 				continue;
 
 			if (minionRect.overlaps(ground.getBounds())) {
-				Gdx.app.log("COLLISION", "horizontal");
+//				Gdx.app.log("COLLISION", "horizontal");
 				minion.getVelocity().x = 0;
 				hellArea.getCollisionRect().add(ground.getBounds());
 				break;
@@ -169,7 +169,7 @@ public class HellController {
 					grounded = true;
 				}
 
-				Gdx.app.log("COLLISION", "vertical");
+//				Gdx.app.log("COLLISION", "vertical");
 
 				minion.getVelocity().y = 0;
 				hellArea.getCollisionRect().add(ground.getBounds());
@@ -179,7 +179,7 @@ public class HellController {
 		}
 
 		minionRect.y = minion.getPosition().y;
-		// Gdx.app.log("Y", "" + minionRect.y);
+		 Gdx.app.log("Y", "" + minionRect.y);
 
 		minion.getPosition().add(minion.getVelocity());
 		minion.getBounds().x = minion.getPosition().x;

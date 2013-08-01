@@ -56,8 +56,8 @@ public class Hell {
 		List<Ground> grounds = new ArrayList<Ground>();
 		Ground ground;
 
-		for (int col = x; col <= x2; col++) {
-			for (int row = y; row <= y2; row++) {
+		for (int col = x; col < x2; col++) {
+			for (int row = y; row < y2; row++) {
 				ground = area.getGround()[col][row];
 				if (ground != null) {
 					grounds.add(ground);
