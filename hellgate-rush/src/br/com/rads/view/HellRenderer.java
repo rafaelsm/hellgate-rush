@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import br.com.rads.model.Ground;
 import br.com.rads.model.Hell;
 import br.com.rads.model.Minion;
+import br.com.rads.model.Pancake;
 
 /**
  * @author rafael da silva melo
@@ -96,6 +97,12 @@ public class HellRenderer {
 		Rectangle rect = m.getBounds();
 		debugRenderer.setColor(Color.GREEN);
 		debugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+		
+		for (Pancake p : hell.getDrawablePancake((int)CAMERA_WIDTH, (int)CAMERA_HEIGHT) ) {
+			Rectangle r = p.getBounds();
+			debugRenderer.setColor(Color.YELLOW);
+			debugRenderer.rect(r.x, r.y, r.width, r.height);
+		}
 
 		debugRenderer.end();
 	}

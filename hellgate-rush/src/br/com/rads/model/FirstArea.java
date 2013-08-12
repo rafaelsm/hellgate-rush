@@ -47,6 +47,27 @@ public class FirstArea extends Area {
 			}
 
 		}
+		
+		for (int col = 0; col < this.width; col++) {
+
+			Pancake pan = null;
+			float fCol = col;
+			
+			if (col < 15 || col > 60) {
+				pan = new Pancake( new Vector2(fCol, 2));
+				this.pancake[col][1] = pan;
+			} else if (col > 15 && col < 30) {
+				pan = new Pancake(new Vector2(fCol, 3));
+				this.pancake[col][2] = pan;
+			} else if (col > 30 && col < 45) {
+				pan = new Pancake(new Vector2(fCol, 4));
+				this.pancake[col][3] = pan;
+			} else if (col > 45 && col < 60) {
+				pan = new Pancake(new Vector2(fCol, 5));
+				this.pancake[col][4] = pan;
+			}
+
+		}
 	}
 
 }

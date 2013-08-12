@@ -13,6 +13,7 @@ public abstract class Area {
 	protected int width;
 	protected int height;
 	protected Ground[][] ground;
+	protected Pancake[][] pancake;
 	
 	/**
 	 * @param width
@@ -24,10 +25,15 @@ public abstract class Area {
 		this.width = width;
 		this.height = height;
 		this.ground = new Ground[width][height];
+		this.pancake = new Pancake[width][height];
 	}
 
 	public abstract void loadArea();
 
+	public Pancake getPancakeAt(int x, int y) {
+		return pancake[x][y];
+	}
+	
 	public Ground get(int x, int y){
 		return ground[x][y];
 	}
@@ -54,6 +60,14 @@ public abstract class Area {
 
 	public void setGround(Ground[][] ground) {
 		this.ground = ground;
+	}
+
+	public Pancake[][] getPancake() {
+		return pancake;
+	}
+
+	public void setPancake(Pancake[][] pancake) {
+		this.pancake = pancake;
 	}
 	
 }
