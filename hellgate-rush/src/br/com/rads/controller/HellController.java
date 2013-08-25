@@ -122,7 +122,7 @@ public class HellController {
 			startX = endX = (int) Math.floor(minion.getBounds().x
 					+ minion.getBounds().width + minion.getVelocity().x);
 		}
-
+		
 		populateCollisionGround(startX, startY, endX, endY);
 		populateCollisionPancake(startX, startY, endX, endY);
 
@@ -169,7 +169,7 @@ public class HellController {
 			startY = endY = (int) Math.floor(minion.getBounds().y
 					+ minion.getBounds().height + minion.getVelocity().y);
 		}
-
+		
 		populateCollisionGround(startX, startY, endX, endY);
 		populateCollisionPancake(startX, startY, endX, endY);
 

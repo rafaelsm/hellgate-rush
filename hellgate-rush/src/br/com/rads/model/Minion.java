@@ -21,7 +21,7 @@ public class Minion {
 		DYING
 	};
 	
-	private static final float SIZE = 0.5f;
+	public static final float SIZE = 1f;
 	
 	private Vector2 position = new Vector2();
 	private Vector2 acceleration = new Vector2();

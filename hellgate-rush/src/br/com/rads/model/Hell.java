@@ -27,7 +27,7 @@ public class Hell {
 	}
 
 	private void createDemoArea(Area area) {
-		minion = new Minion(new Vector2(1, (float)2), true);
+		minion = new Minion(new Vector2(1, 4f), true);
 		this.area = area;
 	}
 

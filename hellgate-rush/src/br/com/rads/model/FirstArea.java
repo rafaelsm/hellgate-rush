@@ -44,6 +44,9 @@ public class FirstArea extends Area {
 			} else if (col > 45 && col < 60) {
 				Ground g = new Ground(new Vector2(col, 3));
 				this.ground[col][3] = g;
+			}else {
+				Ground g = new Ground(new Vector2(col, 0));
+				this.ground[col][0] = g;
 			}
 
 		}

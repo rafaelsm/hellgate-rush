@@ -1,0 +1,109 @@
+minion.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+gatinho_11
+  rotate: false
+  xy: 606, 491
+  size: 300, 157
+  orig: 300, 157
+  offset: 0, 0
+  index: 12
+gatinho_12
+  rotate: false
+  xy: 2, 659
+  size: 300, 155
+  orig: 300, 155
+  offset: 0, 0
+  index: 13
+gatinho_0
+  rotate: false
+  xy: 2, 2
+  size: 300, 161
+  orig: 300, 161
+  offset: 0, 0
+  index: 1
+gatinho_13
+  rotate: false
+  xy: 304, 659
+  size: 300, 155
+  orig: 300, 155
+  offset: 0, 0
+  index: 14
+gatinho_14
+  rotate: false
+  xy: 606, 659
+  size: 300, 158
+  orig: 300, 158
+  offset: 0, 0
+  index: 15
+gatinho_9
+  rotate: false
+  xy: 2, 491
+  size: 300, 166
+  orig: 300, 166
+  offset: 0, 0
+  index: 10
+gatinho_10
+  rotate: false
+  xy: 304, 491
+  size: 300, 163
+  orig: 300, 163
+  offset: 0, 0
+  index: 11
+gatinho_5
+  rotate: false
+  xy: 606, 168
+  size: 300, 144
+  orig: 300, 144
+  offset: 0, 0
+  index: 6
+gatinho_6
+  rotate: false
+  xy: 2, 333
+  size: 300, 141
+  orig: 300, 141
+  offset: 0, 0
+  index: 7
+gatinho_7
+  rotate: false
+  xy: 304, 333
+  size: 300, 148
+  orig: 300, 148
+  offset: 0, 0
+  index: 8
+gatinho_8
+  rotate: false
+  xy: 606, 333
+  size: 300, 156
+  orig: 300, 156
+  offset: 0, 0
+  index: 9
+gatinho_1
+  rotate: false
+  xy: 304, 2
+  size: 300, 163
+  orig: 300, 163
+  offset: 0, 0
+  index: 2
+gatinho_2
+  rotate: false
+  xy: 606, 2
+  size: 300, 164
+  orig: 300, 164
+  offset: 0, 0
+  index: 3
+gatinho_3
+  rotate: false
+  xy: 2, 168
+  size: 300, 163
+  orig: 300, 163
+  offset: 0, 0
+  index: 4
+gatinho_4
+  rotate: false
+  xy: 304, 168
+  size: 300, 153
+  orig: 300, 153
+  offset: 0, 0
+  index: 5
