@@ -82,7 +82,7 @@ public class HellRenderer {
 	}
 
 	private void loadTextures() {
-		TextureAtlas atlas = new TextureAtlas("images/textures/minion.txt");
+		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("images/textures/minion.txt"));
 		minionFrame = atlas.findRegion("gatinho_0");
 
 		TextureRegion[] walkFrames = new TextureRegion[15];
@@ -113,14 +113,6 @@ public class HellRenderer {
 	private void drawMinion() {
 		Minion minion = hell.getMinion();
 		minionFrame = running.getKeyFrame(minion.getStateTime(), true);
-//		float x = 130;
-//		float y = minion.getPosition().y * 100f;
-//		if (minion.getPosition().y > camera.position.y) {
-//			y = (camera.position.y - minion.getPosition().y) * 100f;
-//		}
-//
-//		float width = Minion.SIZE * ppuX;
-//		float height = Minion.SIZE * ppuY;
 		
 		float x = minion.getPosition().x;
 		float y = minion.getPosition().y;
