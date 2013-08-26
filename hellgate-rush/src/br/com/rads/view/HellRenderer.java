@@ -67,9 +67,10 @@ public class HellRenderer {
 
 	public void render() {
 
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 			drawMinion();
-//		 	drawGround();
+			drawGround();
 		batch.end();
 
 		drawCollision();
@@ -90,38 +91,46 @@ public class HellRenderer {
 		}
 
 		running = new Animation(RUNNING_FRAME_DURATION, walkFrames);
-		
+
 		groundTexture = new Texture(Gdx.files.internal("images/ground.png"));
 
 	}
-	
-	private void drawGround(){
-		for (Ground g :  hell.getDrawableGround((int) CAMERA_WIDTH,
+
+	private void drawGround() {
+		for (Ground g : hell.getDrawableGround((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
-			batch.draw(groundTexture, 
-					g.getPosition().x, 
-					g.getPosition().y * ppuY, 
-					Ground.SIZE * ppuX, 
-					Ground.SIZE * ppuY);
+
+			float x = g.getBounds().x;
+			float y = g.getBounds().y;
+			float width = Ground.SIZE;
+			float height = Ground.SIZE;
+
+			batch.draw(groundTexture, x, y, width, height);
+
 		}
 	}
 
 	private void drawMinion() {
 		Minion minion = hell.getMinion();
 		minionFrame = running.getKeyFrame(minion.getStateTime(), true);
-			float x = 130;
-			
-			float y = minion.getPosition().y * 100f;
-			if(minion.getPosition().y > camera.position.y){
-				y = (camera.position.y - minion.getPosition().y) * 100f;
-			}
-			
-			float width = Minion.SIZE * ppuX;
-			float height = Minion.SIZE * ppuY;
-			
-			batch.draw(minionFrame, x, y, width, height);
-			Gdx.app.log("spriteY", "sy="+y+"  miniony="+minion.getPosition().y + "  cameray=" + camera.position.y);
-			
+//		float x = 130;
+//		float y = minion.getPosition().y * 100f;
+//		if (minion.getPosition().y > camera.position.y) {
+//			y = (camera.position.y - minion.getPosition().y) * 100f;
+//		}
+//
+//		float width = Minion.SIZE * ppuX;
+//		float height = Minion.SIZE * ppuY;
+		
+		float x = minion.getPosition().x;
+		float y = minion.getPosition().y;
+		float width = Minion.SIZE;
+		float height = Minion.SIZE;
+
+		batch.draw(minionFrame, x, y, width, height);
+		 Gdx.app.log("spriteY", "sy="+y+"  miniony="+minion.getPosition().y +
+		 "  cameray=" + camera.position.y);
+
 	}
 
 	private void drawDebug() {
@@ -133,7 +142,7 @@ public class HellRenderer {
 			Rectangle rect = g.getBounds();
 			debugRenderer.setColor(Color.RED);
 			debugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-
+			
 		}
 
 		Minion m = hell.getMinion();

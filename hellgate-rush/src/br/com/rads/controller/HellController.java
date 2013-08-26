@@ -40,6 +40,7 @@ public class HellController {
 	private static final float MAX_JUMP_SPEED = 7F;
 	private static final float DAMP = 0.90f;
 	private static final float MAX_VEL = 4f;
+//	private static final float VELOCITY = 5f;
 	private static final float VELOCITY = 5f;
 
 	private Hell hellArea;
