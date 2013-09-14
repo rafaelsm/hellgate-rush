@@ -21,7 +21,7 @@ public class Minion {
 		DYING
 	};
 	
-	public static final float SIZE = 1f;
+	public static final float SIZE = 0.75f;
 	
 	private Vector2 position = new Vector2();
 	private Vector2 acceleration = new Vector2();
@@ -150,6 +150,5 @@ public class Minion {
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
-	
 	
 }

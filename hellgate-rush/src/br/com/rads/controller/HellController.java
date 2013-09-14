@@ -99,6 +99,7 @@ public class HellController {
 
 		minion.getVelocity().x = VELOCITY;;
 		minion.update(delta);
+		
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class HellController {
 			
 			if (minionRect.overlaps(pancake.getBounds())) {
 				i++;
-				Gdx.app.log("Colision", "pancake-"+i);
+//				Gdx.app.log("Colision", "pancake-"+i);
 				hellArea.getCollisionRect().add(pancake.getBounds());
 				pancake.setBounds(new Rectangle());
 				break;

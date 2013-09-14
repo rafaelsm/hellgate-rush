@@ -1,7 +1,11 @@
 /**
  * 
  */
-package br.com.rads.model;
+package br.com.rads.model.stage;
+
+import br.com.rads.model.Ground;
+import br.com.rads.model.Pancake;
+import br.com.rads.model.enemy.Enemy;
 
 
 /**
@@ -14,6 +18,7 @@ public abstract class Area {
 	protected int height;
 	protected Ground[][] ground;
 	protected Pancake[][] pancake;
+	protected Enemy[][] enemy;
 	
 	/**
 	 * @param width
@@ -26,9 +31,14 @@ public abstract class Area {
 		this.height = height;
 		this.ground = new Ground[width][height];
 		this.pancake = new Pancake[width][height];
+		this.setEnemy(new Enemy[width][height]);
 	}
 
 	public abstract void loadArea();
+	
+	public Enemy getEnemyAt(int x, int y){
+		return enemy[x][y];
+	}
 
 	public Pancake getPancakeAt(int x, int y) {
 		return pancake[x][y];
@@ -68,6 +78,14 @@ public abstract class Area {
 
 	public void setPancake(Pancake[][] pancake) {
 		this.pancake = pancake;
+	}
+
+	public Enemy[][] getEnemy() {
+		return enemy;
+	}
+
+	public void setEnemy(Enemy[][] enemy) {
+		this.enemy = enemy;
 	}
 	
 }

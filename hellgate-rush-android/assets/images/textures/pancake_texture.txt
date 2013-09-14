@@ -1,0 +1,46 @@
+pancake_texture.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pancake_5
+  rotate: false
+  xy: 846, 1198
+  size: 842, 596
+  orig: 842, 596
+  offset: 0, 0
+  index: 5
+pancake_0
+  rotate: false
+  xy: 2, 2
+  size: 842, 596
+  orig: 842, 596
+  offset: 0, 0
+  index: 0
+pancake_2
+  rotate: false
+  xy: 2, 600
+  size: 842, 596
+  orig: 842, 596
+  offset: 0, 0
+  index: 2
+pancake_1
+  rotate: false
+  xy: 846, 2
+  size: 842, 596
+  orig: 842, 596
+  offset: 0, 0
+  index: 1
+pancake_4
+  rotate: false
+  xy: 2, 1198
+  size: 842, 596
+  orig: 842, 596
+  offset: 0, 0
+  index: 4
+pancake_3
+  rotate: false
+  xy: 846, 600
+  size: 842, 596
+  orig: 842, 596
+  offset: 0, 0
+  index: 3

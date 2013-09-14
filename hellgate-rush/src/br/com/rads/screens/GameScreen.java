@@ -4,8 +4,8 @@
 package br.com.rads.screens;
 
 import br.com.rads.controller.HellController;
-import br.com.rads.model.FirstArea;
 import br.com.rads.model.Hell;
+import br.com.rads.model.stage.DesertArea;
 import br.com.rads.view.HellRenderer;
 
 import com.badlogic.gdx.Gdx;
@@ -32,7 +32,7 @@ public class GameScreen implements Screen, InputProcessor{
 	 */
 	@Override
 	public void show() {
-		hell = new Hell(new FirstArea(1000, 7));
+		hell = new Hell(new DesertArea(600, 7));
 		renderer = new HellRenderer(hell, true);
 		controller = new HellController(hell);
 		Gdx.input.setInputProcessor(this);
@@ -47,7 +47,7 @@ public class GameScreen implements Screen, InputProcessor{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		controller.update(delta);
-		renderer.render();
+		renderer.render(delta);
 		
 	}
 

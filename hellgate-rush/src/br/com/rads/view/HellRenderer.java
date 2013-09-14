@@ -7,6 +7,7 @@ import br.com.rads.model.Ground;
 import br.com.rads.model.Hell;
 import br.com.rads.model.Minion;
 import br.com.rads.model.Pancake;
+import br.com.rads.model.enemy.Enemy;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Logger;
 
 /**
  * @author rafael da silva melo
@@ -32,13 +32,18 @@ public class HellRenderer {
 	private static final float CAMERA_WIDTH = 10f;
 	private static final float CAMERA_HEIGHT = 7f;
 
-	private static final float RUNNING_FRAME_DURATION = 0.06f;
+	private static final float RUNNING_FRAME_DURATION = 0.03f;
+	private static final float FIRE_FRAME_DURATION = 0.04f;
+	private static final float ENEMY_FRAME_DURATION = 0.04f;
 
 	/**
 	 * Textures/animation
 	 */
 	private TextureRegion minionFrame;
 	private Animation running;
+	private TextureRegion pancakeFrame;
+	private Animation pancakeFire;
+
 	private Texture groundTexture;
 
 	private Hell hell;
@@ -65,11 +70,13 @@ public class HellRenderer {
 
 	}
 
-	public void render() {
+	public void render(float delta) {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 			drawMinion();
+			drawPancake(delta);
+			//drawEnemy(delta);
 			drawGround();
 		batch.end();
 
@@ -82,7 +89,32 @@ public class HellRenderer {
 	}
 
 	private void loadTextures() {
-		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("images/textures/minion.txt"));
+		loadMinionTexture();
+		loadPancakeTexture();
+		loadGroundTexture();
+
+	}
+
+	private void loadPancakeTexture() {
+		TextureAtlas atlas = new TextureAtlas(
+				Gdx.files.internal("images/textures/pancake_texture.txt"));
+		pancakeFrame = atlas.findRegion("pancake_0");
+
+		TextureRegion[] fireFrames = new TextureRegion[6];
+		for (int i = 0; i < 6; i++) {
+			fireFrames[i] = atlas.findRegion("pancake_" + i);
+		}
+
+		pancakeFire = new Animation(FIRE_FRAME_DURATION, fireFrames);
+	}
+
+	private void loadGroundTexture() {
+		groundTexture = new Texture(Gdx.files.internal("images/ground.png"));
+	}
+
+	private void loadMinionTexture() {
+		TextureAtlas atlas = new TextureAtlas(
+				Gdx.files.internal("images/textures/minion.txt"));
 		minionFrame = atlas.findRegion("gatinho_0");
 
 		TextureRegion[] walkFrames = new TextureRegion[15];
@@ -91,9 +123,6 @@ public class HellRenderer {
 		}
 
 		running = new Animation(RUNNING_FRAME_DURATION, walkFrames);
-
-		groundTexture = new Texture(Gdx.files.internal("images/ground.png"));
-
 	}
 
 	private void drawGround() {
@@ -113,40 +142,66 @@ public class HellRenderer {
 	private void drawMinion() {
 		Minion minion = hell.getMinion();
 		minionFrame = running.getKeyFrame(minion.getStateTime(), true);
-		
+
 		float x = minion.getPosition().x;
 		float y = minion.getPosition().y;
 		float width = Minion.SIZE;
 		float height = Minion.SIZE;
 
 		batch.draw(minionFrame, x, y, width, height);
-		 Gdx.app.log("spriteY", "sy="+y+"  miniony="+minion.getPosition().y +
-		 "  cameray=" + camera.position.y);
+	}
 
+	private void drawPancake(float delta) {
+		for (Pancake p : hell.getDrawablePancake((int) CAMERA_WIDTH,
+				(int) CAMERA_HEIGHT)) {
+			p.update(delta);
+			pancakeFrame = pancakeFire.getKeyFrame(p.getStateTime(), true);
+
+			float x = p.getBounds().x;
+			float y = p.getBounds().y;
+			float width = Pancake.SIZE;
+			float height = Pancake.SIZE;
+
+			batch.draw(pancakeFrame, x, y, width, height);
+
+		}
 	}
 
 	private void drawDebug() {
 		debugRenderer.setProjectionMatrix(camera.combined);
 		debugRenderer.begin(ShapeType.Line);
+		
+		// DRAW GROUND
 		for (Ground g : hell.getDrawableGround((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
 
 			Rectangle rect = g.getBounds();
 			debugRenderer.setColor(Color.RED);
 			debugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
-			
+
 		}
 
+		
+		//DRAW MINION
 		Minion m = hell.getMinion();
 
 		Rectangle rect = m.getBounds();
 		debugRenderer.setColor(Color.GREEN);
 		debugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
+		//DRAW PANCAKE
 		for (Pancake p : hell.getDrawablePancake((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
 			Rectangle r = p.getBounds();
 			debugRenderer.setColor(Color.YELLOW);
+			debugRenderer.rect(r.x, r.y, r.width, r.height);
+		}
+		
+		//DRAW ENEMY
+		for (Enemy e : hell.getDrawableEnemy((int) CAMERA_WIDTH,
+				(int) CAMERA_HEIGHT)) {
+			Rectangle r = e.getBounds();
+			debugRenderer.setColor(Color.MAGENTA);
 			debugRenderer.rect(r.x, r.y, r.width, r.height);
 		}
 
