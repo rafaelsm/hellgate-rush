@@ -162,7 +162,6 @@ public class HellController {
 			
 			if (minionRect.overlaps(enemy.getBounds()) && !enemy.isDidDamage()) {
 				hellArea.getCollisionRect().add(enemy.getBounds());
-//				enemy.setBounds(new Rectangle());
 				enemy.setDidDamage(true);
 				minion.loseLife();
 				break;
@@ -227,7 +226,6 @@ public class HellController {
 			
 			if (minionRect.overlaps(enemy.getBounds()) && !enemy.isDidDamage()) {
 				hellArea.getCollisionRect().add(enemy.getBounds());
-//				enemy.setBounds(new Rectangle());
 				enemy.setDidDamage(true);
 				minion.loseLife();
 				break;
