@@ -6,6 +6,7 @@ public class Skull extends Enemy {
 
 	public Skull(Vector2 position) {
 		super(position);
+		this.getBounds().width = 0.5f;
 	}
 
 }

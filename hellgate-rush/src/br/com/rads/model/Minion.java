@@ -3,6 +3,7 @@
  */
 package br.com.rads.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -21,6 +22,7 @@ public class Minion {
 		DYING
 	};
 	
+	private static final String TAG = "Minion";
 	public static final float SIZE = 0.75f;
 	
 	private Vector2 position = new Vector2();
@@ -31,6 +33,7 @@ public class Minion {
 	private float stateTime = 0;
 	private boolean	longJump = false;
 	private State state = State.RUNNING;
+	private int life = 7;
 
 	/**
 	 * Construtor
@@ -41,6 +44,7 @@ public class Minion {
 		this.bounds.y = position.y;
 		this.bounds.height = SIZE;
 		this.bounds.width = SIZE;
+		Gdx.app.log(TAG, "life: " + this.life);
 	}
 	
 	public void update(float delta)
@@ -151,4 +155,21 @@ public class Minion {
 		this.bounds = bounds;
 	}
 	
+	public void loseLife(){
+		this.setLife(this.getLife() - 1);
+		Gdx.app.log(TAG, "life: " + this.life);
+	}
+	
+	public void addLife(){
+		this.setLife(this.getLife() + 1);
+		Gdx.app.log(TAG, "life: " + this.life);
+	}
+
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
 }

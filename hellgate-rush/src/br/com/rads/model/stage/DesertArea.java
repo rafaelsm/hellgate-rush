@@ -106,12 +106,12 @@ public class DesertArea extends Area {
 			switch (screen) {
 			case 0:
 				addTile(col, 0);
-				addEnemy(Type.SKULL, col, 1);
 				break;
 			case 1:
 				if (col == 10 || col == 19) {
 					addTile(col, 1);
 					addPancake(col, 2);
+					addEnemy(Type.SKULL, col, 3);
 				} else {
 					addTile(col, 0);
 				}
@@ -131,6 +131,7 @@ public class DesertArea extends Area {
 
 				if (col < 21) {
 					addPancake(col, 2);
+					addEnemy(Type.SKULL, col, 3);
 				} else if (col > 21 && col < 28) {
 					addPancake(col, 1);
 				}

@@ -21,6 +21,7 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen {
 	public MainMenuScreen() {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		font.scale(5f);
 		lineHeight = Math.round(2.5f * font.getCapHeight());
 		headingLabel = new Label("Screen Manager Demo", font);
 		playButton = new Button("Play", font, new ScreenSwitchHandler(Screen.GAME));

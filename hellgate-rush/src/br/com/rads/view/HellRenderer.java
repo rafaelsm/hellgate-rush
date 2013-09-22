@@ -8,6 +8,7 @@ import br.com.rads.model.Hell;
 import br.com.rads.model.Minion;
 import br.com.rads.model.Pancake;
 import br.com.rads.model.enemy.Enemy;
+import br.com.rads.model.enemy.Skull;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -45,6 +46,7 @@ public class HellRenderer {
 	private Animation pancakeFire;
 
 	private Texture groundTexture;
+	private Texture skullTexture;
 
 	private Hell hell;
 	private OrthographicCamera camera;
@@ -76,7 +78,7 @@ public class HellRenderer {
 		batch.begin();
 			drawMinion();
 			drawPancake(delta);
-			//drawEnemy(delta);
+			drawEnemy(delta);
 			drawGround();
 		batch.end();
 
@@ -92,7 +94,11 @@ public class HellRenderer {
 		loadMinionTexture();
 		loadPancakeTexture();
 		loadGroundTexture();
+		loadSkullTexture();
+	}
 
+	private void loadSkullTexture() {
+		skullTexture = new Texture(Gdx.files.internal("images/textures/skull_sprite.png"));		
 	}
 
 	private void loadPancakeTexture() {
@@ -125,6 +131,20 @@ public class HellRenderer {
 		running = new Animation(RUNNING_FRAME_DURATION, walkFrames);
 	}
 
+	private void drawEnemy(float delta) {
+		for (Enemy e : hell.getDrawableEnemy((int) CAMERA_WIDTH,
+				(int) CAMERA_HEIGHT)) {
+
+			float x = e.getBounds().x;
+			float y = e.getBounds().y;
+			float width = e.getBounds().width;
+			float height = e.getBounds().height;
+
+			batch.draw(skullTexture, x, y, width, height);
+
+		}
+	}
+	
 	private void drawGround() {
 		for (Ground g : hell.getDrawableGround((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
@@ -135,7 +155,6 @@ public class HellRenderer {
 			float height = Ground.SIZE;
 
 			batch.draw(groundTexture, x, y, width, height);
-
 		}
 	}
 

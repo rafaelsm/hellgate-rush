@@ -10,12 +10,12 @@ public class Enemy {
 		HANDS
 	};
 	
-	public static final float SIZE = 1f;
+	protected static float SIZE = 1f;
 
 	private Vector2 position = new Vector2();
 	private Rectangle bounds = new Rectangle();
-
 	private float stateTime = 0;
+	private boolean didDamage;
 
 	public Enemy(Vector2 position) {
 
@@ -74,6 +74,14 @@ public class Enemy {
 	 */
 	public void setStateTime(float stateTime) {
 		this.stateTime = stateTime;
+	}
+
+	public boolean isDidDamage() {
+		return didDamage;
+	}
+
+	public void setDidDamage(boolean didDamage) {
+		this.didDamage = didDamage;
 	}
 
 }

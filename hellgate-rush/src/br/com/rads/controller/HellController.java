@@ -11,8 +11,8 @@ import br.com.rads.model.Hell;
 import br.com.rads.model.Minion;
 import br.com.rads.model.Minion.State;
 import br.com.rads.model.Pancake;
+import br.com.rads.model.enemy.Enemy;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -40,7 +40,6 @@ public class HellController {
 	private static final float MAX_JUMP_SPEED = 7F;
 	private static final float DAMP = 0.90f;
 	private static final float MAX_VEL = 4f;
-//	private static final float VELOCITY = 5f;
 	private static final float VELOCITY = 5f;
 
 	private Hell hellArea;
@@ -49,8 +48,6 @@ public class HellController {
 	private boolean jumpingPressed;
 	private boolean grounded = false;
 	
-	private int i = 0;
-
 	private Pool<Rectangle> rectPool = new Pool<Rectangle>() {
 		@Override
 		protected Rectangle newObject() {
@@ -60,6 +57,7 @@ public class HellController {
 
 	private Array<Ground> collidable = new Array<Ground>();
 	private Array<Pancake> collidablePancake = new Array<Pancake>();
+	private Array<Enemy> collidableEnemy = new Array<Enemy>();
 
 	public HellController(Hell area) {
 		this.hellArea = area;
@@ -127,6 +125,7 @@ public class HellController {
 		
 		populateCollisionGround(startX, startY, endX, endY);
 		populateCollisionPancake(startX, startY, endX, endY);
+		populateCollisionEnemy(startX, startY, endX, endY);
 
 		minionRect.x += minion.getVelocity().x;
 
@@ -150,13 +149,26 @@ public class HellController {
 				continue;
 			
 			if (minionRect.overlaps(pancake.getBounds())) {
-				i++;
 //				Gdx.app.log("Colision", "pancake-"+i);
 				hellArea.getCollisionRect().add(pancake.getBounds());
 				pancake.setBounds(new Rectangle());
 				break;
 			}
 		}
+		
+		for (Enemy enemy : collidableEnemy) {
+			if (enemy == null)
+				continue;
+			
+			if (minionRect.overlaps(enemy.getBounds()) && !enemy.isDidDamage()) {
+				hellArea.getCollisionRect().add(enemy.getBounds());
+//				enemy.setBounds(new Rectangle());
+				enemy.setDidDamage(true);
+				minion.loseLife();
+				break;
+			}
+		}
+
 
 		minionRect.x = minion.getPosition().x;
 
@@ -174,6 +186,7 @@ public class HellController {
 		
 		populateCollisionGround(startX, startY, endX, endY);
 		populateCollisionPancake(startX, startY, endX, endY);
+		populateCollisionEnemy(startX, startY, endX, endY);
 
 		minionRect.y += minion.getVelocity().y;
 
@@ -201,10 +214,22 @@ public class HellController {
 				continue;
 			
 			if (minionRect.overlaps(pancake.getBounds())) {
-				i++;
-				Gdx.app.log("Colision", "pancake-"+i);
+				//Gdx.app.log("Colision", "pancake-"+i);
 				hellArea.getCollisionRect().add(pancake.getBounds());
 				pancake.setBounds( new Rectangle());
+				break;
+			}
+		}
+		
+		for (Enemy enemy : collidableEnemy) {
+			if (enemy == null)
+				continue;
+			
+			if (minionRect.overlaps(enemy.getBounds()) && !enemy.isDidDamage()) {
+				hellArea.getCollisionRect().add(enemy.getBounds());
+//				enemy.setBounds(new Rectangle());
+				enemy.setDidDamage(true);
+				minion.loseLife();
 				break;
 			}
 		}
@@ -217,6 +242,22 @@ public class HellController {
 
 		minion.getVelocity().scl(1 / delta);
 
+	}
+
+	private void populateCollisionEnemy(int startX, int startY, int endX,
+			int endY) {
+		
+		collidableEnemy.clear();
+
+		for (int x = startX; x <= endX; x++) {
+			for (int y = startY; y <= endY; y++) {
+				if (x >= 0 && x < hellArea.getArea().getWidth() && y >= 0
+						&& y < hellArea.getArea().getHeight()) {
+					collidableEnemy.add(hellArea.getArea().getEnemyAt(x, y)); 
+				}
+			}
+		}
+		
 	}
 
 	private void populateCollisionPancake(int startX, int startY, int endX,
