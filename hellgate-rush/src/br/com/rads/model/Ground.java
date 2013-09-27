@@ -27,7 +27,6 @@ public class Ground {
 		this.bounds.setY(position.y);
 		this.bounds.width = SIZE;
 		this.bounds.height = SIZE;
-		
 	}
 
 	public Vector2 getPosition() {

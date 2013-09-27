@@ -13,6 +13,7 @@ import br.com.rads.model.Minion.State;
 import br.com.rads.model.Pancake;
 import br.com.rads.model.enemy.Enemy;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -97,6 +98,10 @@ public class HellController {
 
 		minion.getVelocity().x = VELOCITY;;
 		minion.update(delta);
+		
+		//perdeu...
+		if(minion.getPosition().y < -50 || minion.getLife() <= 0)
+			Gdx.app.exit();
 		
 	}
 

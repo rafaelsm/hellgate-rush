@@ -8,7 +8,6 @@ import br.com.rads.model.Hell;
 import br.com.rads.model.Minion;
 import br.com.rads.model.Pancake;
 import br.com.rads.model.enemy.Enemy;
-import br.com.rads.model.enemy.Skull;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -21,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * @author rafael da silva melo
@@ -60,11 +60,16 @@ public class HellRenderer {
 	private int height;
 	private float ppuX;
 	private float ppuY;
+	
+	private ParallaxBackground parallax;
 
 	public HellRenderer(Hell hellArea, boolean debug) {
 		this.hell = hellArea;
 		this.camera = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
 		this.camera.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
+		this.camera.zoom = 0.7f;
+		this.camera.position.x = this.camera.position.x - 5;
+		this.camera.position.y = this.camera.position.y - 1;
 		this.camera.update();
 		this.debug = debug;
 		batch = new SpriteBatch();
@@ -73,6 +78,7 @@ public class HellRenderer {
 	}
 
 	public void render(float delta) {
+		parallax.render(delta);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -81,12 +87,13 @@ public class HellRenderer {
 			drawEnemy(delta);
 			drawGround();
 		batch.end();
+		
 
 		drawCollision();
 		drawDebug();
 
 		Minion m = hell.getMinion();
-		moveCamera(m.getPosition().x + 4f, CAMERA_HEIGHT / 2);
+		moveCamera(m.getPosition().x + 3f, CAMERA_HEIGHT / 2);
 
 	}
 
@@ -95,6 +102,13 @@ public class HellRenderer {
 		loadPancakeTexture();
 		loadGroundTexture();
 		loadSkullTexture();
+		
+		TextureAtlas atlas = new TextureAtlas(
+				Gdx.files.internal("images/textures/parallax.txt"));
+		parallax = new ParallaxBackground(new ParallaxLayer[]{
+	            new ParallaxLayer(atlas.findRegion("layer_1"),new Vector2(),new Vector2(0, 0)),
+	            new ParallaxLayer(atlas.findRegion("layer_2"),new Vector2(1.0f,1.0f),new Vector2(0, 500)),
+	      }, 1280, 720,new Vector2(100,0));
 	}
 
 	private void loadSkullTexture() {
@@ -139,7 +153,7 @@ public class HellRenderer {
 			float y = e.getBounds().y;
 			float width = e.getBounds().width;
 			float height = e.getBounds().height;
-
+			
 			batch.draw(skullTexture, x, y, width, height);
 
 		}
@@ -243,7 +257,7 @@ public class HellRenderer {
 		Minion minion = hell.getMinion();
 		if (minion.getPosition().y > camera.position.y) {
 			camera.position.y += 0.05;
-		} else if (minion.getPosition().y < camera.position.y - 2.5f) {
+		} else if (minion.getPosition().y < camera.position.y - 1.5f) {
 			camera.position.y -= 0.05;
 		}
 

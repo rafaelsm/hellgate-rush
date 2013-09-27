@@ -12,21 +12,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 
 /**
  * @author rafael da silva melo
- *
+ * 
  */
-public class GameScreen implements Screen, InputProcessor{
+public class GameScreen implements Screen, InputProcessor {
 
 	private Hell hell;
 	private HellRenderer renderer;
 	private HellController controller;
-	
+
 	private int width;
 	private int height;
-	
+
 	/**
 	 * Inicia o mundo e o render
 	 */
@@ -36,8 +38,14 @@ public class GameScreen implements Screen, InputProcessor{
 		renderer = new HellRenderer(hell, true);
 		controller = new HellController(hell);
 		Gdx.input.setInputProcessor(this);
+		
+//		FileHandle fm = Gdx.files.internal("/data/sfx/music/HBSF.mp3");
+//		Music music = Gdx.audio.newMusic(fm);
+//		music.setVolume(0.5f);
+//		music.setLooping(true);
+//		music.play();
 	}
-	
+
 	/**
 	 * Método que desenha na tela
 	 */
@@ -45,10 +53,10 @@ public class GameScreen implements Screen, InputProcessor{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		controller.update(delta);
 		renderer.render(delta);
-		
+
 	}
 
 	@Override
@@ -66,7 +74,7 @@ public class GameScreen implements Screen, InputProcessor{
 	@Override
 	public void pause() {
 	}
-	
+
 	@Override
 	public void resume() {
 	}
@@ -78,21 +86,21 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-		
+
 		if (keycode == Keys.SPACE) {
 			controller.jumpPressed();
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		
+
 		if (keycode == Keys.SPACE) {
 			controller.jumpReleased();
 		}
-		
+
 		return true;
 	}
 
@@ -104,21 +112,21 @@ public class GameScreen implements Screen, InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		
+
 		if (screenX < width / 2 && screenY < height / 2) {
 			controller.jumpPressed();
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		
+
 		if (screenX < width / 2 && screenY < height / 2) {
 			controller.jumpReleased();
 		}
-		
+
 		return true;
 	}
 
