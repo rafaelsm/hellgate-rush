@@ -38,12 +38,12 @@ public class GameScreen implements Screen, InputProcessor {
 		renderer = new HellRenderer(hell, true);
 		controller = new HellController(hell);
 		Gdx.input.setInputProcessor(this);
-		
-//		FileHandle fm = Gdx.files.internal("/data/sfx/music/HBSF.mp3");
-//		Music music = Gdx.audio.newMusic(fm);
-//		music.setVolume(0.5f);
-//		music.setLooping(true);
-//		music.play();
+
+		// FileHandle fm = Gdx.files.internal("/data/sfx/music/HBSF.mp3");
+		// Music music = Gdx.audio.newMusic(fm);
+		// music.setVolume(0.5f);
+		// music.setLooping(true);
+		// music.play();
 	}
 
 	/**
@@ -56,6 +56,8 @@ public class GameScreen implements Screen, InputProcessor {
 
 		controller.update(delta);
 		renderer.render(delta);
+
+		Gdx.app.log("Minion", hell.getMinion().getBounds().toString());
 
 	}
 
@@ -101,6 +103,9 @@ public class GameScreen implements Screen, InputProcessor {
 			controller.jumpReleased();
 		}
 
+		if (keycode == Keys.D)
+			renderer.setDebug(!renderer.isDebug());
+
 		return true;
 	}
 
@@ -113,9 +118,12 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-		if (screenX < width / 2 && screenY < height / 2) {
-			controller.jumpPressed();
-		}
+		controller.jumpPressed();
+		
+		if (pointer >= 1)
+			renderer.setDebug(!renderer.isDebug());
+		
+		Gdx.app.log("Pointer", "pointer number = " + pointer);
 
 		return true;
 	}
@@ -123,9 +131,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-		if (screenX < width / 2 && screenY < height / 2) {
-			controller.jumpReleased();
-		}
+		controller.jumpReleased();
 
 		return true;
 	}

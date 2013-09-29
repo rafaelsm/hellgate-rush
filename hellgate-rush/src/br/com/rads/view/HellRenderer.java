@@ -14,9 +14,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -60,8 +62,13 @@ public class HellRenderer {
 	private int height;
 	private float ppuX;
 	private float ppuY;
-	
+
 	private ParallaxBackground parallax;
+	private Texture pancakeHudTexture;
+	
+	//font
+	private BitmapFont font;
+	public static final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 	public HellRenderer(Hell hellArea, boolean debug) {
 		this.hell = hellArea;
@@ -82,15 +89,17 @@ public class HellRenderer {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-			drawMinion();
-			drawPancake(delta);
-			drawEnemy(delta);
-			drawGround();
+		drawGround();
+		drawPancake(delta);
+		drawEnemy(delta);
+		drawMinion();
+		drawPancakeCounter();
 		batch.end();
-		
 
-		drawCollision();
-		drawDebug();
+		if (debug) {
+			drawCollision();
+			drawDebug();
+		}
 
 		Minion m = hell.getMinion();
 		moveCamera(m.getPosition().x + 3f, CAMERA_HEIGHT / 2);
@@ -100,19 +109,45 @@ public class HellRenderer {
 	private void loadTextures() {
 		loadMinionTexture();
 		loadPancakeTexture();
+		loadPancakeCounterTexture();
 		loadGroundTexture();
 		loadSkullTexture();
-		
+		loadFont();
+
 		TextureAtlas atlas = new TextureAtlas(
 				Gdx.files.internal("images/textures/parallax.txt"));
-		parallax = new ParallaxBackground(new ParallaxLayer[]{
-	            new ParallaxLayer(atlas.findRegion("layer_1"),new Vector2(),new Vector2(0, 0)),
-	            new ParallaxLayer(atlas.findRegion("layer_2"),new Vector2(1.0f,1.0f),new Vector2(0, 500)),
-	      }, 1280, 720,new Vector2(100,0));
+		parallax = new ParallaxBackground(new ParallaxLayer[] {
+				new ParallaxLayer(atlas.findRegion("layer_1"), new Vector2(),
+						new Vector2(0, 0)),
+				new ParallaxLayer(atlas.findRegion("layer_2"), new Vector2(
+						1.0f, 1.0f), new Vector2(0, 500)), }, 1280, 720,
+				new Vector2(100, 0));
+	}
+
+	private void loadFont() {
+//		font = TrueTypeFontFactory.createBitmapFont(
+//				Gdx.files.internal("data/caty.ttf"), 
+//				FONT_CHARACTERS, 
+//				10f, 7f, 1.2f, 
+//				Gdx.graphics.getWidth(), 
+//				Gdx.graphics.getHeight());
+		
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/caty.ttf"));
+		font = generator.generateFont(130, FONT_CHARACTERS, false);
+		generator.dispose();
+		
+		font.setColor(Color.BLACK);
+		font.setScale(2 / (float)Gdx.graphics.getWidth(), 2 / (float)Gdx.graphics.getHeight());
+	}
+
+	private void loadPancakeCounterTexture() {
+		pancakeHudTexture = new Texture(
+				Gdx.files.internal("images/textures/pancake_hud.png"));
 	}
 
 	private void loadSkullTexture() {
-		skullTexture = new Texture(Gdx.files.internal("images/textures/skull_sprite.png"));		
+		skullTexture = new Texture(
+				Gdx.files.internal("images/textures/skull_sprite.png"));
 	}
 
 	private void loadPancakeTexture() {
@@ -120,9 +155,12 @@ public class HellRenderer {
 				Gdx.files.internal("images/textures/pancake_texture.txt"));
 		pancakeFrame = atlas.findRegion("pancake_0");
 
-		TextureRegion[] fireFrames = new TextureRegion[6];
-		for (int i = 0; i < 6; i++) {
-			fireFrames[i] = atlas.findRegion("pancake_" + i);
+		TextureRegion[] fireFrames = new TextureRegion[12];
+		for (int i = 0; i < 12; i++) {
+			if(i < 6)
+				fireFrames[i] = atlas.findRegion("pancake_" + i);
+			else
+				fireFrames[i] = atlas.findRegion("pancake_" + (11-i));
 		}
 
 		pancakeFire = new Animation(FIRE_FRAME_DURATION, fireFrames);
@@ -153,12 +191,12 @@ public class HellRenderer {
 			float y = e.getBounds().y;
 			float width = e.getBounds().width;
 			float height = e.getBounds().height;
-			
+
 			batch.draw(skullTexture, x, y, width, height);
 
 		}
 	}
-	
+
 	private void drawGround() {
 		for (Ground g : hell.getDrawableGround((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
@@ -182,6 +220,12 @@ public class HellRenderer {
 		float height = Minion.SIZE;
 
 		batch.draw(minionFrame, x, y, width, height);
+		
+		float offset = 0.5f;
+		for (int i = 1; i < minion.getLife(); i++) {
+			batch.draw(minionFrame, x - offset, y, width, height);
+			offset += 0.1f;
+		}
 	}
 
 	private void drawPancake(float delta) {
@@ -199,11 +243,35 @@ public class HellRenderer {
 
 		}
 	}
+	
+	private void drawPancakeCounter(){
+		
+		float hudX = camera.position.x - 0.5f;
+		float hudY = camera.position.y + 1.85f;
+		float hudWidth = 0.5f;
+		float hudHeight = 0.5f;
+		
+		batch.draw(pancakeHudTexture, hudX, hudY, hudWidth, hudHeight);
+		font.draw(batch, String.valueOf(hell.getMinion().getPancakes()), hudX + 0.75f, hudY + 0.175f);
+		
+//		Minion m = hell.getMinion();
+//		
+//		float y =camera.position.y -2.25f;
+//		float x = camera.position.x + 2.25f;
+//		
+//		for (int i = 0; i < m.getPancakes(); i++) {
+//			float width = 1;
+//			float height = 1f;
+//
+//			batch.draw(pancakeHudTexture, x, y, width, height);
+//			y+=0.025f;
+//		}
+	}
 
 	private void drawDebug() {
 		debugRenderer.setProjectionMatrix(camera.combined);
 		debugRenderer.begin(ShapeType.Line);
-		
+
 		// DRAW GROUND
 		for (Ground g : hell.getDrawableGround((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
@@ -214,23 +282,22 @@ public class HellRenderer {
 
 		}
 
-		
-		//DRAW MINION
+		// DRAW MINION
 		Minion m = hell.getMinion();
 
 		Rectangle rect = m.getBounds();
 		debugRenderer.setColor(Color.GREEN);
 		debugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
-		//DRAW PANCAKE
+		// DRAW PANCAKE
 		for (Pancake p : hell.getDrawablePancake((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
 			Rectangle r = p.getBounds();
 			debugRenderer.setColor(Color.YELLOW);
 			debugRenderer.rect(r.x, r.y, r.width, r.height);
 		}
-		
-		//DRAW ENEMY
+
+		// DRAW ENEMY
 		for (Enemy e : hell.getDrawableEnemy((int) CAMERA_WIDTH,
 				(int) CAMERA_HEIGHT)) {
 			Rectangle r = e.getBounds();

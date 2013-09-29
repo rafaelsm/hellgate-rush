@@ -34,7 +34,8 @@ public class Minion {
 	private boolean	longJump = false;
 	private State state = State.RUNNING;
 	private int life = 7;
-
+	private int pancakes = 0;
+	
 	/**
 	 * Construtor
 	 */
@@ -53,6 +54,7 @@ public class Minion {
 //		this.bounds.x = position.x;
 //		this.bounds.y = position.y;
 		stateTime += delta;
+		
 	}
 	
 	/**
@@ -171,5 +173,13 @@ public class Minion {
 
 	public void setLife(int life) {
 		this.life = life;
+	}
+	
+	public void addPancake(){
+		this.pancakes++;
+	}
+	
+	public int getPancakes(){
+		return this.pancakes;
 	}
 }
