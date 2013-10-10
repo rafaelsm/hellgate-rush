@@ -1,62 +1,69 @@
 package br.com.rads.screens;
 
-import br.com.rads.screens.Button.ButtonHandler;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
-public class MainMenuScreen implements com.badlogic.gdx.Screen {
+public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 
 	private SpriteBatch batch = null;
-	private OrthographicCamera camera = null;
-	private BitmapFont font = null;
-	private Label headingLabel = null;
-	private Button playButton = null;
-	private Button exitButton = null;
-	private int lineHeight = 0;
+	private Texture background;
+	private Texture startButton;
+	private Texture exitButton;
+	
+	private Rectangle startRect = new Rectangle(246, 100, 289, 129);
+	private Rectangle exitRect = new Rectangle(747, 100, 289, 129);
 	
 	public MainMenuScreen() {
 		batch = new SpriteBatch();
-		font = new BitmapFont();
-		font.scale(5f);
-		lineHeight = Math.round(2.5f * font.getCapHeight());
-		headingLabel = new Label("Screen Manager Demo", font);
-		playButton = new Button("Play", font, new ScreenSwitchHandler(Screen.GAME));
-		exitButton = new Button("Exit", font, new ButtonHandler() {
-			@Override
-			public void onClick() {
-				Gdx.app.exit();
-			}
-		});
+		Gdx.input.setInputProcessor(this);
+		loadTextures();
 	}
 	
+	private void loadTextures() {
+		background = new Texture(
+				Gdx.files.internal("images/textures/menu_background.png"));
+		startButton = new Texture(
+				Gdx.files.internal("images/textures/button_start.png"));
+		exitButton = new Texture(
+				Gdx.files.internal("images/textures/button_exit.png"));
+		
+	}
+
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		headingLabel.draw(batch);
-		playButton.draw(batch, camera);
-		exitButton.draw(batch, camera);
+		drawBackground();
+		drawStartButton();
+		drawExitButton();
 		batch.end();
+	}
+
+	private void drawBackground() {
+		float x = 0;
+		float y = 0;
+		float width = 1280;
+		float height = 720;
+		
+		batch.draw(background, x, y, width, height);
+	}
+	
+	private void drawStartButton() {
+		batch.draw(startButton, startRect.x, startRect.y, startRect.width, startRect.height);
+	}
+
+	private void drawExitButton() {
+		batch.draw(exitButton, exitRect.x, exitRect.y, exitRect.width, exitRect.height);
+		
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, width, height);
-		batch.setProjectionMatrix(camera.combined);
-		int centerX = width / 2;
-		int centerY = height / 2;
-		headingLabel.setX(centerX - headingLabel.getWidth() / 2);
-		headingLabel.setY(centerY + 2 * lineHeight);
-		playButton.setX(centerX - playButton.getWidth() / 2);
-		playButton.setY(centerY + lineHeight);
-		exitButton.setX(centerX - exitButton.getWidth() / 2);
-		exitButton.setY(centerY - lineHeight); 
 	}
 
 	@Override
@@ -66,7 +73,7 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void hide() {
-		
+		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override
@@ -81,8 +88,61 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose() {
-		font.dispose();
-		batch.dispose();
+		Gdx.input.setInputProcessor(null);
 	}
 
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		
+		if (exitRect.contains(screenX, (screenY-720)*-1)) {
+			Gdx.app.exit();
+		} else if (startRect.contains(screenX, (screenY-720)*-1)) {
+			ScreenManager.getInstance().show(Screen.GAME);
+		}
+		
+		return true;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }

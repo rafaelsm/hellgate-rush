@@ -3,6 +3,8 @@
  */
 package br.com.rads.view;
 
+import java.util.List;
+
 import br.com.rads.model.Ground;
 import br.com.rads.model.Hell;
 import br.com.rads.model.Minion;
@@ -89,11 +91,11 @@ public class HellRenderer {
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		drawGround();
-		drawPancake(delta);
-		drawEnemy(delta);
-		drawMinion();
-		drawPancakeCounter();
+			drawGround();
+			drawPancake(delta);
+			drawEnemy(delta);
+			drawMinion(delta);
+			drawPancakeCounter();
 		batch.end();
 
 		if (debug) {
@@ -101,7 +103,7 @@ public class HellRenderer {
 			drawDebug();
 		}
 
-		Minion m = hell.getMinion();
+		Minion m = hell.getFirstMinion();
 		moveCamera(m.getPosition().x + 3f, CAMERA_HEIGHT / 2);
 
 	}
@@ -210,22 +212,32 @@ public class HellRenderer {
 		}
 	}
 
-	private void drawMinion() {
-		Minion minion = hell.getMinion();
-		minionFrame = running.getKeyFrame(minion.getStateTime(), true);
+	private void drawMinion(float delta) {
+		Minion firstMinion = hell.getFirstMinion();
+		List<Minion> minion = hell.getMinions();
+		
+		minionFrame = running.getKeyFrame(firstMinion.getStateTime(), true);
 
-		float x = minion.getPosition().x;
-		float y = minion.getPosition().y;
+		float x = firstMinion.getPosition().x;
+		float y = firstMinion.getPosition().y;
 		float width = Minion.SIZE;
 		float height = Minion.SIZE;
 
 		batch.draw(minionFrame, x, y, width, height);
+//		Gdx.app.log("Minions", "minion: " + 0 + " x: "+x+" y: "+y);
 		
+		//other minions
 		float offset = 0.5f;
-		for (int i = 1; i < minion.getLife(); i++) {
-			batch.draw(minionFrame, x - offset, y, width, height);
-			offset += 0.1f;
+		for (int i = 1; i < firstMinion.getLife(); i++) {
+			Minion m = minion.get(i);
+			float xm = m.getPosition().x;
+			float ym = m.getPosition().y;
+			batch.draw(minionFrame, xm - offset, ym, width, height);
+			
+//			Gdx.app.log("Minions", "minion: " + i + " x: "+xm+" y: "+ym);
 		}
+		
+//		Gdx.app.log("DELTA", String.valueOf(delta));
 	}
 
 	private void drawPancake(float delta) {
@@ -252,9 +264,9 @@ public class HellRenderer {
 		float hudHeight = 0.5f;
 		
 		batch.draw(pancakeHudTexture, hudX, hudY, hudWidth, hudHeight);
-		font.draw(batch, String.valueOf(hell.getMinion().getPancakes()), hudX + 0.75f, hudY + 0.175f);
+		font.draw(batch, String.valueOf(hell.getFirstMinion().getPancakes()), hudX + 0.75f, hudY + 0.475f);
 		
-//		Minion m = hell.getMinion();
+//		Minion m = hell.getFirstMinion();
 //		
 //		float y =camera.position.y -2.25f;
 //		float x = camera.position.x + 2.25f;
@@ -283,7 +295,7 @@ public class HellRenderer {
 		}
 
 		// DRAW MINION
-		Minion m = hell.getMinion();
+		Minion m = hell.getFirstMinion();
 
 		Rectangle rect = m.getBounds();
 		debugRenderer.setColor(Color.GREEN);
@@ -321,7 +333,7 @@ public class HellRenderer {
 
 	public void moveCamera(float x, float y) {
 
-		Minion minion = hell.getMinion();
+		Minion minion = hell.getFirstMinion();
 		if (minion.getPosition().y > camera.position.y) {
 			camera.position.y += 0.05;
 		} else if (minion.getPosition().y < camera.position.y - 1.5f) {

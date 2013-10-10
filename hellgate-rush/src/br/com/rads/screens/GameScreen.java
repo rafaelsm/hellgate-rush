@@ -8,6 +8,7 @@ import br.com.rads.model.Hell;
 import br.com.rads.model.stage.DesertArea;
 import br.com.rads.view.HellRenderer;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -29,21 +30,30 @@ public class GameScreen implements Screen, InputProcessor {
 	private int width;
 	private int height;
 
+	private Music music;
+
 	/**
 	 * Inicia o mundo e o render
 	 */
 	@Override
 	public void show() {
+		
+		new Thread( new Runnable() {
+			
+			@Override
+			public void run() {
+				music = Gdx.audio.newMusic(Gdx.files.internal("HBFS.mp3"));
+				music.setVolume(0.5f);
+				music.setLooping(true);
+				//music.play();
+			}
+		}).start();
+		
 		hell = new Hell(new DesertArea(600, 7));
 		renderer = new HellRenderer(hell, true);
 		controller = new HellController(hell);
 		Gdx.input.setInputProcessor(this);
-
-		// FileHandle fm = Gdx.files.internal("/data/sfx/music/HBSF.mp3");
-		// Music music = Gdx.audio.newMusic(fm);
-		// music.setVolume(0.5f);
-		// music.setLooping(true);
-		// music.play();
+		
 	}
 
 	/**
@@ -56,8 +66,6 @@ public class GameScreen implements Screen, InputProcessor {
 
 		controller.update(delta);
 		renderer.render(delta);
-
-		Gdx.app.log("Minion", hell.getMinion().getBounds().toString());
 
 	}
 
@@ -119,11 +127,9 @@ public class GameScreen implements Screen, InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
 		controller.jumpPressed();
-		
+
 		if (pointer >= 1)
 			renderer.setDebug(!renderer.isDebug());
-		
-		Gdx.app.log("Pointer", "pointer number = " + pointer);
 
 		return true;
 	}

@@ -225,7 +225,7 @@ public class DesertArea extends Area {
 				} else if (col > 86 && col < 89) {
 					addTile(col, 1);
 					if (col == 88)
-						addEnemy(Type.SKULL, col, 2);
+						addEnemy(Type.SKULL, col, 4);
 				} else {
 					addTile(col, 2);
 				}
@@ -233,7 +233,7 @@ public class DesertArea extends Area {
 				if (col == 86 || col == 89) {
 					addPancake(col, 3);
 					if (col == 86)
-						addEnemy(Type.SKULL, col, 1);
+						addEnemy(Type.SKULL, col, 3);
 				}
 
 				break;
@@ -250,7 +250,7 @@ public class DesertArea extends Area {
 						addPancake(col, 1);
 				}
 
-				if (col == 91 || col == 99)
+				if (col == 91)
 					addEnemy(Type.SKULL, col, 1);
 
 				break;
@@ -262,7 +262,7 @@ public class DesertArea extends Area {
 				} else if (col > 101 && col <= 103) {
 					addTile(col, 0);
 					if (col == 103)
-						addPancake(col, 2);
+						addEnemy(Type.SKULL,col, 2);
 				} else {
 					addTile(col, 0);
 					addTile(col, 2);

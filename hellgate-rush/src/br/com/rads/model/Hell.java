@@ -20,7 +20,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Hell {
 
-	private Minion minion;
+	private ArrayList<Minion> minion;
 	private Area area;
 
 	private ArrayList<Rectangle> collisionRects = new ArrayList<Rectangle>();
@@ -30,7 +30,14 @@ public class Hell {
 	}
 
 	private void createDemoArea(Area area) {
-		minion = new Minion(new Vector2(0f, 4f), true);
+		minion = new ArrayList<Minion>();
+		minion.add(new Minion(new Vector2(0f, 4f), true));
+		minion.add(new Minion(new Vector2(-0.1f, 4f), false));
+		minion.add(new Minion(new Vector2(-0.2f, 4f), false));
+		minion.add(new Minion(new Vector2(-0.3f, 4f), false));
+		minion.add(new Minion(new Vector2(-0.4f, 4f), false));
+		minion.add(new Minion(new Vector2(-0.5f, 4f), false));
+		minion.add(new Minion(new Vector2(-0.6f, 4f), false));
 		this.area = area;
 	}
 
@@ -38,8 +45,8 @@ public class Hell {
 	public List<Ground> getDrawableGround(int width, int height) {
 
 		// pega posicao do minion
-		int x = (int) minion.getPosition().x - width;
-		int y = (int) minion.getPosition().y - height;
+		int x = (int) minion.get(0).getPosition().x - width;
+		int y = (int)  minion.get(0).getPosition().y - height;
 
 		if (x < 0)
 			x = 0;
@@ -72,8 +79,8 @@ public class Hell {
 	}
 
 	public List<Pancake> getDrawablePancake(int width, int height) {
-		int x = (int) minion.getPosition().x - width;
-		int y = (int) minion.getPosition().y - height;
+		int x = (int) minion.get(0).getPosition().x - width;
+		int y = (int) minion.get(0).getPosition().y - height;
 
 		if (x < 0)
 			x = 0;
@@ -106,8 +113,8 @@ public class Hell {
 	}
 
 	public List<Enemy> getDrawableEnemy(int width, int height) {
-		int x = (int) minion.getPosition().x - width;
-		int y = (int) minion.getPosition().y - height;
+		int x = (int) minion.get(0).getPosition().x - width;
+		int y = (int) minion.get(0).getPosition().y - height;
 
 		if (x < 0)
 			x = 0;
@@ -140,7 +147,7 @@ public class Hell {
 	}
 
 	// Getters
-	public Minion getMinion() {
+	public ArrayList<Minion> getMinions() {
 		return minion;
 	}
 
@@ -150,6 +157,10 @@ public class Hell {
 
 	public ArrayList<Rectangle> getCollisionRect() {
 		return collisionRects;
+	}
+	
+	public Minion getFirstMinion() {
+		return minion.get(0);
 	}
 
 }

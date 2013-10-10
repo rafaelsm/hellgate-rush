@@ -36,6 +36,8 @@ public class Minion {
 	private int life = 7;
 	private int pancakes = 0;
 	
+	private boolean firstMinion;
+	
 	/**
 	 * Construtor
 	 */
@@ -45,7 +47,7 @@ public class Minion {
 		this.bounds.y = position.y;
 		this.bounds.height = SIZE;
 		this.bounds.width = SIZE;
-		Gdx.app.log(TAG, "life: " + this.life);
+		this.firstMinion = firstMinion;
 	}
 	
 	public void update(float delta)
@@ -159,12 +161,10 @@ public class Minion {
 	
 	public void loseLife(){
 		this.setLife(this.getLife() - 1);
-		Gdx.app.log(TAG, "life: " + this.life);
 	}
 	
 	public void addLife(){
 		this.setLife(this.getLife() + 1);
-		Gdx.app.log(TAG, "life: " + this.life);
 	}
 
 	public int getLife() {
@@ -182,4 +182,9 @@ public class Minion {
 	public int getPancakes(){
 		return this.pancakes;
 	}
+
+	public boolean isFirstMinion() {
+		return firstMinion;
+	}
+
 }
