@@ -12,11 +12,26 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Pancake {
 
-	public static final float SIZE = 0.5f;
+	public static final float SIZE = 0.75f;
 	
 	private Vector2 position = new Vector2();
 	private Rectangle bounds = new Rectangle();
 	private float stateTime = 0;
+	private boolean catched;
+
+	/**
+	 * @return the catched
+	 */
+	public boolean isCatched() {
+		return catched;
+	}
+
+	/**
+	 * @param catched the catched to set
+	 */
+	public void setCatched(boolean catched) {
+		this.catched = catched;
+	}
 
 	public Pancake(Vector2 position) {
 		this.position = position;

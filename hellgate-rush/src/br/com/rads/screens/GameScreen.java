@@ -4,6 +4,7 @@
 package br.com.rads.screens;
 
 import br.com.rads.controller.HellController;
+import br.com.rads.controller.Resources;
 import br.com.rads.model.Hell;
 import br.com.rads.model.stage.DesertArea;
 import br.com.rads.view.HellRenderer;
@@ -30,30 +31,24 @@ public class GameScreen implements Screen, InputProcessor {
 	private int width;
 	private int height;
 
-	private Music music;
-
 	/**
 	 * Inicia o mundo e o render
 	 */
 	@Override
 	public void show() {
-		
-		new Thread( new Runnable() {
-			
-			@Override
-			public void run() {
-				music = Gdx.audio.newMusic(Gdx.files.internal("HBFS.mp3"));
-				music.setVolume(0.5f);
-				music.setLooping(true);
-				//music.play();
+		Resources resources = Resources.getInstance();
+		if (resources.getMusic() != null) {
+			if (!resources.getMusic().isPlaying()) {
+				resources.getMusic().play();
+				resources.getMusic().setLooping(true);
 			}
-		}).start();
-		
+		}
+
 		hell = new Hell(new DesertArea(600, 7));
 		renderer = new HellRenderer(hell, true);
 		controller = new HellController(hell);
 		Gdx.input.setInputProcessor(this);
-		
+
 	}
 
 	/**
@@ -79,6 +74,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
+		// music.dispose();
 	}
 
 	@Override
@@ -92,6 +88,7 @@ public class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void dispose() {
 		Gdx.input.setInputProcessor(null);
+		// music.dispose();
 	}
 
 	@Override

@@ -6,6 +6,7 @@ package br.com.rads.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.text.Position;
 
 import br.com.rads.model.Ground;
 import br.com.rads.model.Hell;
@@ -62,12 +63,14 @@ public class HellController {
 	private Array<Ground> collidable = new Array<Ground>();
 	private Array<Pancake> collidablePancake = new Array<Pancake>();
 	private Array<Enemy> collidableEnemy = new Array<Enemy>();
-	private Vector2 firstMinionJumpingPosition;
+
+	private Resources resources;
 
 	public HellController(Hell area) {
 		this.hellArea = area;
 		this.minion = area.getFirstMinion();
 		configKeys();
+		resources = Resources.getInstance();
 	}
 
 	private void configKeys() {
@@ -77,6 +80,14 @@ public class HellController {
 
 	public void update(float delta) {
 
+		if(minion.getPosition().x < 10f && minion.getPosition().y < 0){
+			minion.setPosition( new Vector2(minion.getPosition().x, 8f));
+			for (int i = 1; i < hellArea.getMinions().size(); i++) {
+				Minion m = hellArea.getMinions().get(i);
+				m.setPosition( new Vector2(m.getPosition().x, 8f));
+			}
+		}
+		
 		// pega entradas
 		processInput();
 
@@ -86,11 +97,19 @@ public class HellController {
 		}
 
 		minion.getAcceleration().y = GRAVITY;
+
 		minion.getAcceleration().scl(delta);
 		minion.getVelocity().add(minion.getAcceleration().x,
 				minion.getAcceleration().y);
 
-		updateAllMinionsGravity(delta);
+		// bugzao
+		final float deltaTemp = delta;
+		Timer.schedule(new Task() {
+			@Override
+			public void run() {
+				updateAllMinionsGravity(deltaTemp);
+			}
+		}, 0);
 
 		checkCollisionForAllMinions(delta);
 
@@ -108,16 +127,16 @@ public class HellController {
 
 		updateAllMinions(delta);
 
-		if (minion.getPosition().x < 4f && minion.getPosition().y < 0f) {
-			minion.setPosition(new Vector2(0f, 4f));
-		}
-
 		// perdeu...
-		if (minion.getPosition().y < -50 || minion.getLife() <= 0) {
+		if (minion.getPosition().y < -20 || minion.getLife() <= 0) {
 			ScreenManager.getInstance().show(Screen.GAME_OVER);
+			resources.stopMusic();
+			resources.stopSounds();
+
 		}
 
 	}
+
 
 	private void updateAllMinionsState(State state) {
 		List<Minion> minions = hellArea.getMinions();
@@ -227,8 +246,6 @@ public class HellController {
 				minion.getVelocity().x = 0;
 				pauseAllMinions(true);
 				hellArea.getCollisionRect().add(ground.getBounds());
-				Gdx.app.log("GROUND", "ground x,y: " + ground.getPosition().x
-						+ "," + ground.getPosition().y);
 				break;
 			}
 		}
@@ -290,7 +307,7 @@ public class HellController {
 
 				if (minionRect.overlaps(ground.getBounds())) {
 
-					if (m.getVelocity().y < 0) {
+					if (m.isFirstMinion() && minion.getVelocity().y < 0) {
 						grounded = true;
 					}
 
@@ -346,7 +363,7 @@ public class HellController {
 		List<Minion> minions = hellArea.getMinions();
 
 		for (Minion m : minions) {
-			
+
 			m.getVelocity().scl(delta);
 
 			Rectangle minionRect = rectPool.obtain();
@@ -375,28 +392,28 @@ public class HellController {
 			hellArea.getCollisionRect().clear();
 
 			if (m.isFirstMinion()) {
-			for (Ground ground : collidable) {
+				for (Ground ground : collidable) {
 
-				if (ground == null)
-					continue;
+					if (ground == null)
+						continue;
 
-				if (minionRect.overlaps(ground.getBounds())) {
-					m.getVelocity().x = 0;
-					pauseAllMinions(true);
-					hellArea.getCollisionRect().add(ground.getBounds());
-					break;
+					if (minionRect.overlaps(ground.getBounds())) {
+						m.getVelocity().x = 0;
+						pauseAllMinions(true);
+						hellArea.getCollisionRect().add(ground.getBounds());
+						break;
+					}
 				}
-			}
 
-			
 				for (Pancake pancake : collidablePancake) {
 					if (pancake == null)
 						continue;
 
 					if (minionRect.overlaps(pancake.getBounds())) {
 						hellArea.getCollisionRect().add(pancake.getBounds());
-						pancake.setBounds(new Rectangle());
+						pancake.setCatched(true);
 						m.addPancake();
+						resources.playSound();
 						break;
 					}
 				}
@@ -446,7 +463,7 @@ public class HellController {
 
 				if (minionRect.overlaps(ground.getBounds())) {
 
-					if (m.getVelocity().y < 0) {
+					if (m.isFirstMinion() && m.getVelocity().y < 0) {
 						grounded = true;
 					}
 
@@ -457,31 +474,32 @@ public class HellController {
 				}
 			}
 
-			if(m.isFirstMinion()){
-			for (Pancake pancake : collidablePancake) {
-				if (pancake == null)
-					continue;
+			if (m.isFirstMinion()) {
+				for (Pancake pancake : collidablePancake) {
+					if (pancake == null)
+						continue;
 
-				if (minionRect.overlaps(pancake.getBounds())) {
-					hellArea.getCollisionRect().add(pancake.getBounds());
-					pancake.setBounds(new Rectangle());
-					m.addPancake();
-					break;
+					if (minionRect.overlaps(pancake.getBounds())) {
+						hellArea.getCollisionRect().add(pancake.getBounds());
+						pancake.setCatched(true);
+						m.addPancake();
+						resources.playSound();
+						break;
+					}
 				}
-			}
 
-			for (Enemy enemy : collidableEnemy) {
-				if (enemy == null)
-					continue;
+				for (Enemy enemy : collidableEnemy) {
+					if (enemy == null)
+						continue;
 
-				if (minionRect.overlaps(enemy.getBounds())
-						&& !enemy.isDidDamage()) {
-					hellArea.getCollisionRect().add(enemy.getBounds());
-					enemy.setDidDamage(true);
-					m.loseLife();
-					break;
+					if (minionRect.overlaps(enemy.getBounds())
+							&& !enemy.isDidDamage()) {
+						hellArea.getCollisionRect().add(enemy.getBounds());
+						enemy.setDidDamage(true);
+						m.loseLife();
+						break;
+					}
 				}
-			}
 			}
 
 			minionRect.y = m.getPosition().y;
@@ -527,12 +545,6 @@ public class HellController {
 
 	}
 
-	/**
-	 * @param startX
-	 * @param startY
-	 * @param endX
-	 * @param endY
-	 */
 	private void populateCollisionGround(int startX, int startY, int endX,
 			int endY) {
 
@@ -549,9 +561,6 @@ public class HellController {
 
 	}
 
-	/**
-	 * 
-	 */
 	private boolean processInput() {
 		if (keys.get(Keys.JUMP)) {
 
@@ -560,15 +569,15 @@ public class HellController {
 				jumpingPressed = true;
 				jumpPressedTime = System.currentTimeMillis();
 
-				float i = 0.1f;
+				float i = 0.05f;
 				for (Minion m : hellArea.getMinions()) {
 
 					if (m.isFirstMinion()) {
 						m.setState(State.JUMPING);
 						m.getVelocity().y = MAX_JUMP_SPEED;
 					} else {
-						jump(m, i);
-						i += 0.1f;
+						jump(m, i, State.JUMPING);
+						i += 0.05f;
 					}
 				}
 				grounded = false;
@@ -582,16 +591,14 @@ public class HellController {
 					jumpingPressed = false;
 				} else {
 					if (jumpingPressed) {
-						// minion.getVelocity().y = MAX_JUMP_SPEED;
 
 						float i = 0.05f;
 						for (Minion m : hellArea.getMinions()) {
 
 							if (m.isFirstMinion()) {
-								m.setState(State.JUMPING);
 								m.getVelocity().y = MAX_JUMP_SPEED;
 							} else {
-								jump(m, i);
+								jump(m, i, null);
 								i += 0.05f;
 							}
 
@@ -604,11 +611,13 @@ public class HellController {
 		return false;
 	}
 
-	public void jump(final Minion m, float delay) {
+	public void jump(final Minion m, float delay, final State state) {
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-				m.setState(State.JUMPING);
+				if (state != null){
+					m.setState(state);
+				}
 				m.getVelocity().y = MAX_JUMP_SPEED;
 			}
 		}, delay);
@@ -616,7 +625,6 @@ public class HellController {
 
 	public void jumpPressed() {
 		keys.get(keys.put(Keys.JUMP, true));
-		firstMinionJumpingPosition = hellArea.getFirstMinion().getPosition();
 	}
 
 	public void jumpReleased() {

@@ -1,7 +1,10 @@
 package br.com.rads.screens;
 
+import br.com.rads.controller.Resources;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,16 +16,18 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 	private Texture background;
 	private Texture startButton;
 	private Texture exitButton;
-	
+
 	private Rectangle startRect = new Rectangle(246, 100, 289, 129);
 	private Rectangle exitRect = new Rectangle(747, 100, 289, 129);
-	
+
+	private Music music;
+
 	public MainMenuScreen() {
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(this);
 		loadTextures();
 	}
-	
+
 	private void loadTextures() {
 		background = new Texture(
 				Gdx.files.internal("images/textures/menu_background.png"));
@@ -30,7 +35,7 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 				Gdx.files.internal("images/textures/button_start.png"));
 		exitButton = new Texture(
 				Gdx.files.internal("images/textures/button_exit.png"));
-		
+
 	}
 
 	@Override
@@ -49,17 +54,19 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 		float y = 0;
 		float width = 1280;
 		float height = 720;
-		
+
 		batch.draw(background, x, y, width, height);
 	}
-	
+
 	private void drawStartButton() {
-		batch.draw(startButton, startRect.x, startRect.y, startRect.width, startRect.height);
+		batch.draw(startButton, startRect.x, startRect.y, startRect.width,
+				startRect.height);
 	}
 
 	private void drawExitButton() {
-		batch.draw(exitButton, exitRect.x, exitRect.y, exitRect.width, exitRect.height);
-		
+		batch.draw(exitButton, exitRect.x, exitRect.y, exitRect.width,
+				exitRect.height);
+
 	}
 
 	@Override
@@ -68,7 +75,7 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		
+
 	}
 
 	@Override
@@ -78,12 +85,12 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 
 	@Override
 	public void pause() {
-		
+
 	}
 
 	@Override
 	public void resume() {
-		
+
 	}
 
 	@Override
@@ -117,13 +124,13 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		
-		if (exitRect.contains(screenX, (screenY-720)*-1)) {
+
+		if (exitRect.contains(screenX, (screenY - 720) * -1)) {
 			Gdx.app.exit();
-		} else if (startRect.contains(screenX, (screenY-720)*-1)) {
+		} else if (startRect.contains(screenX, (screenY - 720) * -1)) {
 			ScreenManager.getInstance().show(Screen.GAME);
 		}
-		
+
 		return true;
 	}
 
@@ -144,5 +151,5 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 }

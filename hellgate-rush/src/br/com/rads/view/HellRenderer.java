@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.com.rads.view;
 
 import java.util.List;
@@ -26,12 +23,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-/**
- * @author rafael da silva melo
- * 
- *         Classe que renderiza a tela
- * 
- */
 public class HellRenderer {
 
 	private static final float CAMERA_WIDTH = 10f;
@@ -169,7 +160,7 @@ public class HellRenderer {
 	}
 
 	private void loadGroundTexture() {
-		groundTexture = new Texture(Gdx.files.internal("images/ground.png"));
+		groundTexture = new Texture(Gdx.files.internal("images/ground.jpg"));
 	}
 
 	private void loadMinionTexture() {
@@ -224,8 +215,7 @@ public class HellRenderer {
 		float height = Minion.SIZE;
 
 		batch.draw(minionFrame, x, y, width, height);
-//		Gdx.app.log("Minions", "minion: " + 0 + " x: "+x+" y: "+y);
-		
+
 		//other minions
 		float offset = 0.5f;
 		for (int i = 1; i < firstMinion.getLife(); i++) {
@@ -234,10 +224,8 @@ public class HellRenderer {
 			float ym = m.getPosition().y;
 			batch.draw(minionFrame, xm - offset, ym, width, height);
 			
-//			Gdx.app.log("Minions", "minion: " + i + " x: "+xm+" y: "+ym);
 		}
 		
-//		Gdx.app.log("DELTA", String.valueOf(delta));
 	}
 
 	private void drawPancake(float delta) {
@@ -248,10 +236,18 @@ public class HellRenderer {
 
 			float x = p.getBounds().x;
 			float y = p.getBounds().y;
+			
+			if(p.isCatched()){
+				 x = p.getBounds().x += 0.25;
+				 y = p.getBounds().y += 0.25;
+			}
+			
 			float width = Pancake.SIZE;
 			float height = Pancake.SIZE;
 
+			if(y < camera.position.y + 1.85f)
 			batch.draw(pancakeFrame, x, y, width, height);
+			
 
 		}
 	}
@@ -266,18 +262,6 @@ public class HellRenderer {
 		batch.draw(pancakeHudTexture, hudX, hudY, hudWidth, hudHeight);
 		font.draw(batch, String.valueOf(hell.getFirstMinion().getPancakes()), hudX + 0.75f, hudY + 0.475f);
 		
-//		Minion m = hell.getFirstMinion();
-//		
-//		float y =camera.position.y -2.25f;
-//		float x = camera.position.x + 2.25f;
-//		
-//		for (int i = 0; i < m.getPancakes(); i++) {
-//			float width = 1;
-//			float height = 1f;
-//
-//			batch.draw(pancakeHudTexture, x, y, width, height);
-//			y+=0.025f;
-//		}
 	}
 
 	private void drawDebug() {

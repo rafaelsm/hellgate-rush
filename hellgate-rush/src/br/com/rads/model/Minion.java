@@ -28,7 +28,9 @@ public class Minion {
 	private Vector2 position = new Vector2();
 	private Vector2 acceleration = new Vector2();
 	private Vector2 velocity = new Vector2();
+	private Vector2 initialPosition = new Vector2();
 	private Rectangle bounds = new Rectangle();
+	private Rectangle initialBounds = new Rectangle();
 	
 	private float stateTime = 0;
 	private boolean	longJump = false;
@@ -42,11 +44,13 @@ public class Minion {
 	 * Construtor
 	 */
 	public Minion(Vector2 position, boolean firstMinion) {
+		this.initialPosition = position;
 		this.position = position;
 		this.bounds.x = position.x;
 		this.bounds.y = position.y;
 		this.bounds.height = SIZE;
 		this.bounds.width = SIZE;
+		this.initialBounds = this.bounds;
 		this.firstMinion = firstMinion;
 	}
 	
@@ -187,4 +191,8 @@ public class Minion {
 		return firstMinion;
 	}
 
+	public void setInicialPosition(){
+		this.position = this.initialPosition;
+		this.bounds = this.initialBounds;
+	}
 }

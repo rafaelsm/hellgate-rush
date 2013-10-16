@@ -31,13 +31,13 @@ public class Hell {
 
 	private void createDemoArea(Area area) {
 		minion = new ArrayList<Minion>();
-		minion.add(new Minion(new Vector2(0f, 4f), true));
-		minion.add(new Minion(new Vector2(-0.1f, 4f), false));
-		minion.add(new Minion(new Vector2(-0.2f, 4f), false));
-		minion.add(new Minion(new Vector2(-0.3f, 4f), false));
-		minion.add(new Minion(new Vector2(-0.4f, 4f), false));
-		minion.add(new Minion(new Vector2(-0.5f, 4f), false));
-		minion.add(new Minion(new Vector2(-0.6f, 4f), false));
+		minion.add(new Minion(new Vector2(0f, 18f), true));
+		minion.add(new Minion(new Vector2(-0.1f, 18f), false));
+		minion.add(new Minion(new Vector2(-0.2f, 18f), false));
+		minion.add(new Minion(new Vector2(-0.3f, 18f), false));
+		minion.add(new Minion(new Vector2(-0.4f, 18f), false));
+		minion.add(new Minion(new Vector2(-0.5f, 18f), false));
+		minion.add(new Minion(new Vector2(-0.6f, 18f), false));
 		this.area = area;
 	}
 
