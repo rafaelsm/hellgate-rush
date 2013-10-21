@@ -38,9 +38,14 @@ public class GameScreen implements Screen, InputProcessor {
 	public void show() {
 		Resources resources = Resources.getInstance();
 		if (resources.getMusic() != null) {
+			try{
 			if (!resources.getMusic().isPlaying()) {
 				resources.getMusic().play();
 				resources.getMusic().setLooping(true);
+			}
+			}catch(Exception e){
+				resources.restart();
+				resources.playMusic();
 			}
 		}
 

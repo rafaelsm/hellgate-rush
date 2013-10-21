@@ -62,4 +62,9 @@ public class Resources {
 		if(this.pancakeSound != null)
 			this.pancakeSound.stop();
 	}
+
+	public void restart() {
+		music = Gdx.audio.newMusic(Gdx.files.internal("DST-Desert.mp3"));
+		pancakeSound = Gdx.audio.newSound(Gdx.files.internal("blop.mp3"));
+	}
 }

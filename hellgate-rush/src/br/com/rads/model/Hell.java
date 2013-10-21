@@ -31,7 +31,7 @@ public class Hell {
 
 	private void createDemoArea(Area area) {
 		minion = new ArrayList<Minion>();
-		minion.add(new Minion(new Vector2(0f, 18f), true));
+		minion.add(new Minion(new Vector2(-0f, 18f), true));
 		minion.add(new Minion(new Vector2(-0.1f, 18f), false));
 		minion.add(new Minion(new Vector2(-0.2f, 18f), false));
 		minion.add(new Minion(new Vector2(-0.3f, 18f), false));

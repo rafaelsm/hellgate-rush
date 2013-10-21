@@ -1,5 +1,7 @@
 package br.com.rads.screens;
 
+import br.com.rads.controller.Resources;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
@@ -121,6 +123,8 @@ public class GameOverScreen implements com.badlogic.gdx.Screen, InputProcessor {
 		Gdx.app.log("TOUCH", "x");
 		
 		if (exitRect.contains(screenX, (screenY-720)*-1)) {
+			Resources.getInstance().getMusic().dispose();
+			Resources.getInstance().getPancakeSound().dispose();
 			Gdx.app.exit();
 		} else if (startRect.contains(screenX, (screenY-720)*-1)) {
 			ScreenManager.getInstance().show(Screen.GAME);
