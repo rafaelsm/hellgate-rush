@@ -50,7 +50,7 @@ public class GameScreen implements Screen, InputProcessor {
 		}
 
 		hell = new Hell(new DesertArea(600, 7));
-		renderer = new HellRenderer(hell, true);
+		renderer = new HellRenderer(hell, false);
 		controller = new HellController(hell);
 		Gdx.input.setInputProcessor(this);
 

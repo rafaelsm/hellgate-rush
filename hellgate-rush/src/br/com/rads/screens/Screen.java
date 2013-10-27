@@ -20,6 +20,12 @@ public enum Screen {
 		protected com.badlogic.gdx.Screen getScreenInstance() {
 			return new GameOverScreen();
 		}
+	},
+	WIN{
+		@Override
+		protected com.badlogic.gdx.Screen getScreenInstance() {
+			return new WinScreen();
+		}
 	};
 
 	protected abstract com.badlogic.gdx.Screen getScreenInstance();

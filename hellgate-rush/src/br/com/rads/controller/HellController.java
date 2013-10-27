@@ -134,6 +134,12 @@ public class HellController {
 			resources.stopSounds();
 
 		}
+		
+		if (minion.getPosition().x > 580 && minion.getLife() > 0) {
+			ScreenManager.getInstance().show(Screen.WIN);
+			resources.stopMusic();
+			resources.stopSounds();
+		}
 
 	}
 
