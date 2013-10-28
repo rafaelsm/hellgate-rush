@@ -80,7 +80,7 @@ public class HellController {
 
 	public void update(float delta) {
 
-		if(minion.getPosition().x < 10f && minion.getPosition().y < 0){
+		if(minion.getPosition().x < 20f && minion.getPosition().y < 0){
 			minion.setPosition( new Vector2(minion.getPosition().x, 8f));
 			for (int i = 1; i < hellArea.getMinions().size(); i++) {
 				Minion m = hellArea.getMinions().get(i);
@@ -104,12 +104,12 @@ public class HellController {
 
 		// bugzao
 		final float deltaTemp = delta;
-		Timer.schedule(new Task() {
-			@Override
-			public void run() {
+//		Timer.schedule(new Task() {
+//			@Override
+//			public void run() {
 				updateAllMinionsGravity(deltaTemp);
-			}
-		}, 0);
+//			}
+//		}, 0);
 
 		checkCollisionForAllMinions(delta);
 
@@ -249,6 +249,7 @@ public class HellController {
 				continue;
 
 			if (minionRect.overlaps(ground.getBounds())) {
+				
 				minion.getVelocity().x = 0;
 				pauseAllMinions(true);
 				hellArea.getCollisionRect().add(ground.getBounds());
@@ -404,6 +405,7 @@ public class HellController {
 						continue;
 
 					if (minionRect.overlaps(ground.getBounds())) {
+						Gdx.app.log("Colision", "" + ground.getPosition().x);
 						m.getVelocity().x = 0;
 						pauseAllMinions(true);
 						hellArea.getCollisionRect().add(ground.getBounds());
@@ -575,7 +577,7 @@ public class HellController {
 				jumpingPressed = true;
 				jumpPressedTime = System.currentTimeMillis();
 
-				float i = 0.05f;
+				float i = 0.025f;
 				for (Minion m : hellArea.getMinions()) {
 
 					if (m.isFirstMinion()) {
@@ -583,7 +585,7 @@ public class HellController {
 						m.getVelocity().y = MAX_JUMP_SPEED;
 					} else {
 						jump(m, i, State.JUMPING);
-						i += 0.05f;
+						i += 0.025f;
 					}
 				}
 				grounded = false;
@@ -598,14 +600,14 @@ public class HellController {
 				} else {
 					if (jumpingPressed) {
 
-						float i = 0.05f;
+						float i = 0.025f;
 						for (Minion m : hellArea.getMinions()) {
 
 							if (m.isFirstMinion()) {
 								m.getVelocity().y = MAX_JUMP_SPEED;
 							} else {
 								jump(m, i, null);
-								i += 0.05f;
+								i += 0.025f;
 							}
 
 						}

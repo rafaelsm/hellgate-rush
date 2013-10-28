@@ -16,8 +16,8 @@ public class GameOverScreen implements com.badlogic.gdx.Screen, InputProcessor {
 	private Texture restartButton;
 	private Texture exitButton;
 	
-	private Rectangle startRect = new Rectangle(246, 100, 289, 129);
-	private Rectangle exitRect = new Rectangle(747, 100, 289, 129);
+	private Rectangle startRect = new Rectangle(174, 100, 400, 130);
+	private Rectangle exitRect = new Rectangle(706, 100, 400, 130);
 	
 	public GameOverScreen() {
 		batch = new SpriteBatch();
@@ -29,9 +29,9 @@ public class GameOverScreen implements com.badlogic.gdx.Screen, InputProcessor {
 		background = new Texture(
 				Gdx.files.internal("images/textures/game_over.png"));
 		restartButton = new Texture(
-				Gdx.files.internal("images/textures/game_over_restart.png"));
+				Gdx.files.internal("images/textures/bt_play_again.png"));
 		exitButton = new Texture(
-				Gdx.files.internal("images/textures/game_over_exit.png"));
+				Gdx.files.internal("images/textures/bt_exit.png"));
 		
 	}
 

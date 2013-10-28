@@ -108,6 +108,7 @@ public class DesertArea extends Area {
 				addTile(col, 0);
 				break;
 			case 1:
+				addTile(col, 0);
 				if (col == 10 || col == 19) {
 					addTile(col, 1);
 					addPancake(col, 2);
@@ -124,15 +125,14 @@ public class DesertArea extends Area {
 			case 2:
 
 				if (col == 20 || col == 29) {
-					addTile(col, 1);
+					// addTile(col, 1);
+					addPancake(col, 2);
+					addEnemy(Type.SKULL, col, 3);
 				} else {
 					addTile(col, 0);
 				}
 
-				if (col < 21) {
-					addPancake(col, 2);
-					addEnemy(Type.SKULL, col, 3);
-				} else if (col > 21 && col < 28) {
+				if (col > 21 && col < 29) {
 					addPancake(col, 1);
 				}
 
@@ -219,36 +219,28 @@ public class DesertArea extends Area {
 
 					if (col > 80 && col < 85)
 						addPancake(col, 1);
-					else if (col == 85)
-						addPancake(col, 2);
 
-				} else if (col > 86 && col < 89) {
+				} else if (col > 86 && col <= 89) {
 					addTile(col, 1);
 					if (col == 88)
-						addEnemy(Type.SKULL, col, 4);
-				} else {
-					addTile(col, 2);
+						addEnemy(Type.SKULL, col, 3);
 				}
 
 				if (col == 86 || col == 89) {
-					addPancake(col, 3);
+					addPancake(col, 2);
 					if (col == 86)
 						addEnemy(Type.SKULL, col, 3);
 				}
 
 				break;
 			case 9:
-				if (col == 90) {
-					addTile(col, 2);
-					addPancake(col, 4);
-				} else {
-					addTile(col, 0);
 
-					if (col == 91)
-						addPancake(col, 5);
-					else if (col > 92 && col < 99)
-						addPancake(col, 1);
-				}
+				addTile(col, 0);
+
+				if (col == 91)
+					addPancake(col, 5);
+				else if (col > 92 && col < 99)
+					addPancake(col, 1);
 
 				if (col == 91)
 					addEnemy(Type.SKULL, col, 1);
@@ -262,7 +254,7 @@ public class DesertArea extends Area {
 				} else if (col > 101 && col <= 103) {
 					addTile(col, 0);
 					if (col == 103)
-						addEnemy(Type.SKULL,col, 2);
+						addEnemy(Type.SKULL, col, 2);
 				} else {
 					addTile(col, 0);
 					addTile(col, 2);
@@ -396,6 +388,9 @@ public class DesertArea extends Area {
 					addPancake(col, 1);
 				}
 
+				if (col == 169)
+					addEnemy(Type.SKULL, col, 1);
+
 				break;
 
 			case 17:
@@ -403,14 +398,14 @@ public class DesertArea extends Area {
 				if (col <= 172) {
 					addTile(col, 1);
 				} else if (col <= 175) {
-					addTile(col, 0);
+					// addTile(col, 0);
 				} else if (col <= 178) {
 					addTile(col, 1);
 				} else {
-					addTile(col, 0);
+					// addTile(col, 0);
 				}
 
-				if (col == 172 || col == 178) {
+				if (col == 178) {
 					addEnemy(Type.SKULL, col, 2);
 				}
 
@@ -420,57 +415,37 @@ public class DesertArea extends Area {
 
 				break;
 			case 18:
-
-				if (col <= 181) {
-					addTile(col, 0);
-				} else if (col <= 184) {
+				if (col > 181 && col <= 184) {
 					addTile(col, 1);
-				} else if (col <= 186) {
-					addTile(col, 0);
-				} else {
+				} else if (col > 186) {
 					addTile(col, 2);
-					addTile(col, 0);
-				}
-				
-				if (col == 184) {
-					addEnemy(Type.SKULL, col, 2);
 				}
 
 				if (col == 183) {
 					addPancake(col, 2);
 				}
-
-				if (col > 186) {
-					addPancake(col, 1);
-					addPancake(col, 2);
-				}
-
 				break;
 			case 19:
 
 				if (col <= 193) {
 					addTile(col, 2);
-					addPancake(	col, 1);
-					addPancake(	col, 3);
+					addPancake(col, 3);
+				} else {
+					addTile(col, 0);
 				}
-				addTile(col, 0);
-				
-				if(col == 194 || col == 195){
-					addEnemy(Type.SKULL, col, 0);
+
+				if (col == 194) {
 					addEnemy(Type.SKULL, col, 4);
 				}
 
 				break;
 
 			case 20:
-				if (col <= 202) {
+				if (col <= 207) {
 					addTile(col, 0);
 					addPancake(col, 1);
-				} else if (col <= 205) {
+				} else if (col <= 209) {
 					addTile(col, 1);
-				} else if (col <= 208) {
-					addTile(col, 2);
-					addPancake(col, 3);
 				} else {
 					addTile(col, 0);
 				}
@@ -498,15 +473,15 @@ public class DesertArea extends Area {
 				addTile(col, 5);
 				addTile(col, 0);
 
-				if (col == 220){
+				if (col == 220) {
 					addPancake(col, 1);
-				}else if(col >= 225 && col <= 228 ){
+				} else if (col >= 225 && col <= 228) {
 					addPancake(col, 1);
 					addPancake(col, 6);
 				}
-				
+
 				if (col == 223 || col == 229) {
-					addEnemy(Type.SKULL,col, 2);
+					addEnemy(Type.SKULL, col, 2);
 				}
 
 				break;
@@ -524,12 +499,12 @@ public class DesertArea extends Area {
 				}
 
 				if (col == 237 || col == 232) {
-					addEnemy(Type.SKULL,col, 2);
+					addEnemy(Type.SKULL, col, 2);
 				}
 
 				break;
 			case 24:
-				//aparei aqui
+				// aparei aqui
 				if (col == 240) {
 					addTile(col, 5);
 					addTile(col, 0);
@@ -540,14 +515,14 @@ public class DesertArea extends Area {
 					addPancake(col, 1);
 				} else if (col < 249) {
 					addTile(col, 1);
-					
-					if(col > 242 && col < 246){
+
+					if (col > 242 && col < 246) {
 						addPancake(col, 2);
 					}
-					
-					if(col == 248)
+
+					if (col == 248)
 						addEnemy(Type.SKULL, col, 2);
-					
+
 				} else {
 					addTile(col, 2);
 					addTile(col, 1);
@@ -596,12 +571,6 @@ public class DesertArea extends Area {
 
 			case 30:
 				addTile(col, 0);
-
-				if (col == 302) {
-					addTile(col, 5);
-					addTile(col, 6);
-				}
-
 				break;
 			case 31:
 
@@ -670,6 +639,7 @@ public class DesertArea extends Area {
 				if (col <= 364) {
 					addTile(col, 0);
 				} else if (col <= 368) {
+					addPancake(col, 2);
 					addTile(col, 1);
 				}
 
@@ -678,14 +648,25 @@ public class DesertArea extends Area {
 
 				if (col < 379) {
 					addTile(col, 2);
+
+					if (col != 374)
+						addPancake(col, 3);
 				}
+				if (col == 374)
+					addEnemy(Type.SKULL, col, 3);
 
 				break;
 			case 38:
 
 				if (col < 389) {
 					addTile(col, 3);
+
+					if (col != 384)
+						addPancake(col, 4);
 				}
+
+				if (col == 384)
+					addEnemy(Type.SKULL, col, 4);
 
 				break;
 			case 39:
@@ -701,6 +682,7 @@ public class DesertArea extends Area {
 				break;
 			case 41:
 				addTile(col, 0);
+				addPancake(col, 1);
 				break;
 			case 42:
 				if (col <= 422) {
@@ -723,7 +705,9 @@ public class DesertArea extends Area {
 					addTile(col, 0);
 				} else if (col <= 437) {
 					addTile(col, 1);
+					addPancake(col, 2);
 				} else {
+					addPancake(col, 3);
 					addTile(col, 2);
 				}
 
@@ -733,8 +717,10 @@ public class DesertArea extends Area {
 				if (col == 440) {
 					addTile(col, 2);
 				} else if (col <= 443) {
+					addPancake(col, 4);
 					addTile(col, 3);
 				} else if (col <= 446) {
+					addPancake(col, 5);
 					addTile(col, 4);
 				} else {
 					addTile(col, 5);
@@ -753,6 +739,15 @@ public class DesertArea extends Area {
 					addTile(col, 1);
 				}
 
+				if (col == 450)
+					addEnemy(Type.SKULL, col, 5);
+				if (col == 453)
+					addEnemy(Type.SKULL, col, 4);
+				if (col == 456)
+					addEnemy(Type.SKULL, col, 3);
+				if (col == 459)
+					addEnemy(Type.SKULL, col, 2);
+
 				break;
 			case 46:
 
@@ -762,10 +757,14 @@ public class DesertArea extends Area {
 					addTile(col, 0);
 				}
 
+				if (col == 462)
+					addEnemy(Type.SKULL, col, 1);
+
 				break;
 			case 47:
 
 				if (col > 471 && col < 475) {
+					addPancake(col, 1);
 					addTile(col, 0);
 				} else if (col > 476) {
 					addTile(col, 0);
@@ -775,6 +774,8 @@ public class DesertArea extends Area {
 			case 48:
 
 				if (col > 481 && col < 485) {
+					addPancake(col, 1);
+
 					addTile(col, 0);
 				} else if (col > 486) {
 					addTile(col, 0);
@@ -792,15 +793,20 @@ public class DesertArea extends Area {
 			case 50:
 
 				if (col > 501 && col < 505) {
+					addPancake(col, 1);
 					addTile(col, 0);
 				} else if (col > 506) {
 					addTile(col, 1);
 				}
 
+				if (col == 509)
+					addEnemy(Type.SKULL, col, 2);
+
 				break;
 			case 51:
 
 				if (col <= 512) {
+					addPancake(col, 3);
 					addTile(col, 2);
 				} else if (col > 514 && col < 518) {
 					addTile(col, 2);
@@ -814,8 +820,11 @@ public class DesertArea extends Area {
 				addTile(col, 0);
 
 				if (col == 529) {
+					addPancake(col, 2);
 					addTile(col, 1);
 				}
+				if (col == 521)
+					addEnemy(Type.SKULL, col, 1);
 
 				break;
 			case 53:
@@ -834,10 +843,6 @@ public class DesertArea extends Area {
 				addTile(col, 0);
 				addTile(col, 1);
 
-				if (col == 549) {
-					addTile(col, 2);
-				}
-
 				break;
 			case 55:
 
@@ -848,20 +853,25 @@ public class DesertArea extends Area {
 				}
 
 				if (col == 559) {
+					addPancake(col, 4);
 					addTile(col, 3);
+					addEnemy(Type.SKULL, col, 1);
 				}
 				break;
 			case 56:
 
 				addTile(col, 0);
 
-				if (col == 562) {
+				if (col == 563) {
 					addTile(col, 1);
 					addTile(col, 4);
+					addPancake(col, 2);
+					addPancake(col, 5);
 				} else if (col > 562 && col < 569) {
 					addTile(col, 4);
 				} else {
 					addTile(col, 5);
+					addPancake(col, 6);
 				}
 
 				break;

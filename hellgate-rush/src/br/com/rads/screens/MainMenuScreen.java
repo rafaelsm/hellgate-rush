@@ -1,7 +1,5 @@
 package br.com.rads.screens;
 
-import br.com.rads.controller.Resources;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
@@ -17,8 +15,8 @@ public class MainMenuScreen implements com.badlogic.gdx.Screen, InputProcessor {
 	private Texture startButton;
 	private Texture exitButton;
 
-	private Rectangle startRect = new Rectangle(246, 100, 289, 129);
-	private Rectangle exitRect = new Rectangle(747, 100, 289, 129);
+	private Rectangle startRect = new Rectangle(174, 100, 400, 130);
+	private Rectangle exitRect = new Rectangle(706, 100, 400, 130);
 
 	private Music music;
 
